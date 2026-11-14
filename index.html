@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PFW Financial Wellness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a working tool. One calm column of cards under a sticky tab bar; numbers lead, prose follows. */
+:root {
+  --bg: #F3F5F7; --surface: #FFFFFF; --sunk: #E9EDF1; --ink: #13202B; --muted: #4C5B68; --line: #D5DCE3;
+  --accent: #0A5C72; --accent-ink: #FFFFFF; --accent-soft: #DCEEF2; --mark: #8A5200; --mark-soft: #FFF1D9;
+  --good: #176B3C; --good-soft: #E2F3E8; --crit: #A8261E; --crit-soft: #FBE7E5;
+  --s1: #2A78D6; --s2: #EB6834; --s3: #1BAF7A; --s4: #6250D6; --s5: #7A8894;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1418; --surface: #162028; --sunk: #1E2A34; --ink: #E7EEF2; --muted: #A3B3BF; --line: #2C3A46;
+    --accent: #62C3D8; --accent-ink: #06222A; --accent-soft: #143642; --mark: #F0B45A; --mark-soft: #3A2B10;
+    --good: #6FD39A; --good-soft: #143424; --crit: #FF9A90; --crit-soft: #3F1B18;
+    --s1: #5B9BE6; --s2: #F08A5F; --s3: #3FCB96; --s4: #9486F0; --s5: #8D9BA7;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1418; --surface: #162028; --sunk: #1E2A34; --ink: #E7EEF2; --muted: #A3B3BF; --line: #2C3A46;
+  --accent: #62C3D8; --accent-ink: #06222A; --accent-soft: #143642; --mark: #F0B45A; --mark-soft: #3A2B10;
+  --good: #6FD39A; --good-soft: #143424; --crit: #FF9A90; --crit-soft: #3F1B18;
+  --s1: #5B9BE6; --s2: #F08A5F; --s3: #3FCB96; --s4: #9486F0; --s5: #8D9BA7;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.25rem; font-weight: 700; }
+h3 { font-size: 1rem; font-weight: 700; font-family: var(--body); }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+.top { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top-in { max-width: 1120px; margin: 0 auto; padding: 10px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.brand b { font-family: var(--display); font-size: 1.15rem; letter-spacing: 0.02em; }
+.brand span { color: var(--muted); font-size: 0.85rem; }
+nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: thin; }
+nav a { padding: 9px 12px; text-decoration: none; color: var(--muted); font-weight: 600; font-size: 0.92rem; white-space: nowrap;
+  border-bottom: 3px solid transparent; }
+nav a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
+nav a:hover { color: var(--ink); }
+main { max-width: 1120px; margin: 0 auto; padding: 22px 16px 60px; display: flex; flex-direction: column; gap: 18px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.grid { display: grid; gap: 18px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.split { display: grid; gap: 18px; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); align-items: start; }
+@media (max-width: 820px) { .split { grid-template-columns: 1fr; } }
+.lead { font-size: 1.05rem; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 0.86rem; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.stack { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.pill.good { background: var(--good-soft); color: var(--good); }
+.pill.warn { background: var(--mark-soft); color: var(--mark); }
+.pill.crit { background: var(--crit-soft); color: var(--crit); }
+.pill.info { background: var(--accent-soft); color: var(--accent); }
+.tile b { font-family: var(--display); font-size: 1.7rem; font-variant-numeric: tabular-nums; line-height: 1.1; display: block; }
+.tile span { color: var(--muted); font-size: 0.86rem; }
+button, .btn { font: inherit; font-weight: 600; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  padding: 9px 14px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+button:hover, .btn:hover { border-color: var(--accent); }
+button.primary, .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+select, input[type="number"], input[type="text"], input[type="password"], textarea { font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; }
+label.f { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; font-weight: 600; }
+fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+legend { font-weight: 600; padding: 0; margin-bottom: 6px; max-width: 68ch; }
+.opts { display: flex; flex-direction: column; gap: 6px; }
+.opts.h { flex-direction: row; flex-wrap: wrap; }
+.opt { display: flex; gap: 8px; align-items: flex-start; padding: 8px 11px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; background: var(--surface); }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.opt input { margin-top: 4px; accent-color: var(--accent); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; background: var(--surface); padding: 7px 12px; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.plan-text { background: var(--sunk); border-radius: 10px; padding: 16px 18px; font-size: 1.04rem; line-height: 1.7; }
+.note { background: var(--mark-soft); color: var(--mark); border-radius: 8px; padding: 10px 14px; }
+.note.crit { background: var(--crit-soft); color: var(--crit); }
+.note.good { background: var(--good-soft); color: var(--good); }
+.note.info { background: var(--accent-soft); color: var(--ink); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 0.82rem; }
+td.n, th.n { text-align: right; }
+tr.hl td { background: var(--accent-soft); font-weight: 600; }
+svg.chart { width: 100%; height: auto; display: block; }
+svg.chart text { font-family: var(--body); fill: var(--muted); font-size: 12px; }
+svg.chart text.v { fill: var(--ink); font-weight: 600; }
+svg.chart .grid { stroke: var(--line); stroke-width: 1; }
+svg.chart .axis { stroke: var(--muted); stroke-width: 1; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.84rem; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.bar { height: 10px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.steps { display: flex; gap: 6px; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); }
+.steps span { padding: 3px 9px; border-radius: 999px; background: var(--sunk); }
+.steps span.on { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.steps span.done { background: var(--good-soft); color: var(--good); }
+details { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
+summary { cursor: pointer; font-weight: 600; }
+.sim { border: 2px dashed var(--crit); }
+.simflag { color: var(--crit); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; }
+code { background: var(--sunk); padding: 1px 5px; border-radius: 4px; font-size: 0.88em; }
+.err { color: var(--crit); font-weight: 600; }
+footer { max-width: 1120px; margin: 0 auto; padding: 0 16px 40px; color: var(--muted); font-size: 0.82rem; }
+@media (prefers-reduced-motion: no-preference) { .bar i { transition: width .3s; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand"><b>PFW</b><span>Privacy-preserving personal financial wellness: research platform</span></div>
+  <nav id="nav" aria-label="Sections"></nav>
+</div></header>
+<main id="view"></main>
+<footer>Education and research only. This is not investment advice and not a SEBI-registered adviser. Your plan is worked out in this browser.
+  Market history: AMFI fund NAVs to <span id="asof"></span>. Past returns do not predict future returns.</footer>
+<script>
+/* ===== Settings you may change before deploying ===== */
+const CONFIG = {
+  RESPONSE_ENDPOINT: "",      // paste your Google Apps Script web-app URL here to collect study responses centrally
+  ADMIN_CODE: "pfw-admin",    // access code for the Researcher tab (a soft gate, not real security)
+  TARGET_PER_TIER: 60         // participants wanted in each literacy tier
+};
+const DATA = {"built":"13 Nov 2026","core":{"ATTRS":[{"key":"age_group","domain":[1,2,3,4,5,6],"ordinal":true,"default":3},{"key":"income_b","domain":[1,2,3,4,5,6,7,8,9,10],"ordinal":true,"default":4},{"key":"risk_w","domain":[1,2,3,4,5,6,7,8,9,10],"ordinal":true,"default":4},{"key":"spend","domain":[1,2,3],"ordinal":false,"default":3},{"key":"emergency","domain":[1,2],"ordinal":false,"default":2},{"key":"dependents","domain":[1,2,3,4,5,6],"ordinal":false,"default":5},{"key":"debt_stress","domain":[1,2,3,4,5,6,7],"ordinal":true,"default":4},{"key":"income_drop","domain":[1,2],"ordinal":false,"default":2},{"key":"difficulty","domain":[1,2,3],"ordinal":true,"default":2},{"key":"invests","domain":[1,2],"ordinal":false,"default":2}],"AGE_MID":{"1":21,"2":30,"3":40,"4":50,"5":60,"6":70},"INR_INCOME":{"1":15000,"2":22000,"3":30000,"4":40000,"5":55000,"6":75000,"7":100000,"8":150000,"9":220000,"10":350000},"RETIREMENT_AGE":60,"INFLATION":0.06,"STEP_UP":0.08,"ASSUMED_RETURN":{"Conservative":0.07,"Moderate":0.08,"Aggressive":0.09},"RISK_CATS":["Conservative","Moderate","Aggressive"],"RISK_CUTS":[0.36,0.56],"MODEL_PORTFOLIOS":{"Conservative":{"Equity":25,"Gold":10,"Gilt":35,"Liquid":30},"Moderate":{"Equity":50,"Gold":10,"Gilt":25,"Liquid":15},"Aggressive":{"Equity":75,"Gold":10,"Gilt":10,"Liquid":5}},"CAPACITY_WEIGHTS":{"horizon":0.3,"emergency":0.15,"saving":0.15,"debt":0.15,"stability":0.1,"cashflow":0.1,"dependents":0.05},"TIERS":["Low","Medium","High"],"TIER_CUTS":[2,4],"TIER_TO_REGISTER":{"Low":"Plain","Medium":"Guided","High":"Expert"},"REGISTERS":["Plain","Guided","Expert"],"PLAIN_UP":{"horizon":"You have many years before you need this money. That gives it time to grow.","emergency":"You already keep money aside for a rainy day. That is a strong start.","saving":"You spend less than you earn. So you have money left to put away.","debt":"Your loans do not weigh on you much. That leaves room to save.","stability":"Your income has been steady.","cashflow":"You pay your monthly bills without trouble.","dependents":"Few people depend on your income.","tolerance":"You told us you are fine with some ups and downs."},"PLAIN_DOWN":{"horizon":"You will need this money fairly soon.","emergency":"You do not have spare cash for a rainy day yet.","saving":"You spend about all that you earn.","debt":"Your loans feel heavy right now.","stability":"Your income dropped without warning last year.","cashflow":"Paying monthly bills is hard right now.","dependents":"Other people depend on your income.","tolerance":"You told us you do not like big ups and downs."},"GUIDED":{"horizon":["a long time until the goal, so short-term falls have time to recover","a short time until the goal, which leaves little time to recover from a fall"],"emergency":["an emergency fund already in place","no emergency fund yet (cash set aside for surprises)"],"saving":["a monthly surplus, because you spend less than you earn","little or no monthly surplus to invest"],"debt":["a comfortable debt load","a debt load that feels heavy"],"stability":["a steady income","an unexpected drop in income in the past year"],"cashflow":["no difficulty paying monthly bills","difficulty paying monthly bills"],"dependents":["few financial dependants","several people who depend on your income"],"tolerance":["a stated willingness to accept ups and downs","a stated preference for stability"]},"EXPERT":{"horizon":"investment horizon","emergency":"liquidity buffer","saving":"savings capacity","debt":"perceived leverage","stability":"income stability","cashflow":"cash-flow adequacy","dependents":"dependency load","tolerance":"stated risk tolerance"},"CAT_PLAIN":{"Conservative":"a careful plan","Moderate":"a balanced plan","Aggressive":"a growth plan"}},"instruments":{"LITERACY":{"Q1 Interest":{"text":"You put ₹10,000 in a savings account that pays 2% interest a year. If you leave it untouched for 5 years, how much will be in the account?","options":["More than ₹10,200","Exactly ₹10,200","Less than ₹10,200","Don't know"],"correct":0},"Q2 Inflation":{"text":"Your savings earn 1% interest a year and prices rise by 2% a year. After one year, how much can you buy with the money in the account?","options":["More than today","Exactly the same as today","Less than today","Don't know"],"correct":2},"Q3 Bond price":{"text":"If interest rates rise, what usually happens to the prices of existing bonds?","options":["They rise","They fall","They stay the same","There is no link","Don't know"],"correct":1},"Q4 Compounding":{"text":"You owe ₹10,000 on a loan that charges 20% interest a year, compounded yearly. If you pay nothing back, how long will it take for the amount you owe to double?","options":["Less than 2 years","2 to less than 5 years","5 to less than 10 years","10 years or more","Don't know"],"correct":1},"Q5 Probability":{"text":"Which of these shows the highest chance of something happening?","options":["A 1 in 20 chance","2% of people","25 out of every 1,000 people","Don't know"],"correct":0},"Q6 Loan tenure":{"text":"A 15-year home loan usually has a higher EMI than a 30-year home loan, but the total interest paid over the loan is lower.","options":["True","False","Don't know"],"correct":0},"Q7 Diversification":{"text":"Buying shares of a single company usually gives a safer return than a mutual fund that holds many companies.","options":["True","False","Don't know"],"correct":1}},"PROFILE":{"age_group":{"text":"What is your age?","options":[["18 to 24",1],["25 to 34",2],["35 to 44",3],["45 to 54",4],["55 to 64",5],["65 or above",6]]},"income_b":{"text":"What is your household's total monthly income (take-home)?","options":[["Up to ₹18,000",1],["₹18,001 to ₹26,000",2],["₹26,001 to ₹35,000",3],["₹35,001 to ₹47,000",4],["₹47,001 to ₹65,000",5],["₹65,001 to ₹87,000",6],["₹87,001 to ₹1,25,000",7],["₹1,25,001 to ₹1,85,000",8],["₹1,85,001 to ₹2,85,000",9],["More than ₹2,85,000",10]]},"spend":{"text":"Over the past year, how did your household's spending compare with its income?","options":[["We spent less than our income",1],["We spent about as much as our income",3],["We spent more than our income",2],["Not sure",3]]},"emergency":{"text":"Do you have money set aside that could cover about three months of expenses in an emergency?","options":[["Yes",1],["No",2],["Not sure",2]]},"dependents":{"text":"How many children depend on you financially?","options":[["None",5],["1",1],["2",2],["3",3],["4 or more",4]]},"debt_stress":{"text":"How much do you agree: \"I have too much debt right now\"?","options":[["1 - Strongly disagree",1],["2",2],["3",3],["4 - Neither",4],["5",5],["6",6],["7 - Strongly agree",7]]},"income_drop":{"text":"In the past year, did your household's income drop sharply when you did not expect it?","options":[["No",2],["Yes",1],["Not sure",2]]},"difficulty":{"text":"In a typical month, how hard is it to cover all your expenses and bills?","options":[["Not at all difficult",3],["Somewhat difficult",2],["Very difficult",1]]},"invests":{"text":"Apart from PF, PPF or NPS, do you have investments such as mutual funds, shares or bonds?","options":[["Yes",1],["No",2],["Not sure",2]]},"risk_w":{"text":"When you think about investing, how willing are you to take risks? (1 = not at all willing, 10 = very willing)","options":[["1",1],["2",2],["3",3],["4",4],["5",5],["6",6],["7",7],["8",8],["9",9],["10",10]]}},"PROFILE_ORDER":["age_group","income_b","spend","emergency","dependents","debt_stress","income_drop","difficulty","invests","risk_w"],"VIGNETTES":{"V1":{"name":"Asha","story":"Asha is 30, works in an office and lives with her husband. They have no children yet. They spend less than they earn but have no emergency savings. Asha is fairly comfortable with risk. She wants ₹25 lakh (in today's money) for a home down payment in 12 years.","goal_amount_today":2500000,"goal_years":12,"codes":{"age_group":2,"income_b":6,"risk_w":7,"spend":1,"emergency":2,"dependents":5,"debt_stress":3,"income_drop":2,"difficulty":3,"invests":2}},"V2":{"name":"Ravi","story":"Ravi is 50 and runs a small shop. Two children depend on him. His income dropped suddenly last year, he spends about what he earns, and he keeps three months of expenses aside. He dislikes big ups and downs. He wants ₹6 lakh (in today's money) for his daughter's college fees in 6 years.","goal_amount_today":600000,"goal_years":6,"codes":{"age_group":4,"income_b":5,"risk_w":3,"spend":3,"emergency":1,"dependents":2,"debt_stress":5,"income_drop":1,"difficulty":2,"invests":2}}},"CELLS":[["Adaptive","V1"],["Adaptive","V2"],["Standard","V1"],["Standard","V2"]],"DRIVER_LABEL":{"horizon":"How many years remain until the goal","emergency":"Whether emergency savings are in place","saving":"How much is left after monthly spending","debt":"How heavy the debts feel","stability":"How steady the income is","cashflow":"How easy it is to pay monthly bills","dependents":"How many people depend on the income","tolerance":"How comfortable the person is with ups and downs"},"SUS":["I think that I would like to use this app frequently.","I found the app unnecessarily complex.","I thought the app was easy to use.","I think that I would need the support of a technical person to be able to use this app.","I found the various functions in this app were well integrated.","I thought there was too much inconsistency in this app.","I would imagine that most people would learn to use this app very quickly.","I found the app very cumbersome to use.","I felt very confident using the app.","I needed to learn a lot of things before I could get going with this app."],"UEQ_S":[["obstructive","supportive"],["complicated","easy"],["inefficient","efficient"],["confusing","clear"],["boring","exciting"],["not interesting","interesting"],["conventional","inventive"],["usual","leading edge"]],"CONSTRUCTS":{"PU":["Using this app would help me make better money decisions.","The plan I received fits my own situation.","This app would be useful for planning my savings and investments."],"TRUST":["I believe the app's suggestions are in my interest.","I would rely on this app when deciding how to invest.","The app was honest about what could go wrong."],"PRIV":["I felt in control of what happened to my financial answers.","I understood where my answers were processed.","I am comfortable entering my real financial details in this app."],"EXPL":["I understood why the app suggested this plan for me.","The explanation had the right amount of detail for me.","I could explain this plan to a family member."],"BI":["I would use this app if it were available to me.","I would recommend this app to a friend or family member."]},"SEQ_TEXT":"Overall, how easy or difficult was it to understand this plan? (1 = very difficult, 7 = very easy)","BACKGROUND":{"gender":["Woman","Man","Another identity","Prefer not to say"],"education":["Up to Class 10","Class 12 or diploma","Graduate","Postgraduate or above"],"self_rated_knowledge":["1","2","3","4","5","6","7"],"uses_upi_or_mobile_banking":["Daily","Weekly","Rarely","Never"],"language_comfort_english":["Very comfortable","Somewhat comfortable","Not comfortable"]},"COLUMNS":["participant_id","timestamp_utc","app_version","cell","consent","age_group","gender","education","self_rated_knowledge","uses_upi_or_mobile_banking","language_comfort_english","screener_tier","screener_questions_asked","lit_Q1","lit_Q2","lit_Q3","lit_Q4","lit_Q5","lit_Q6","lit_Q7","lit_score_full7","lit_tier_full7","b1_interface","b1_vignette","b1_register_shown","b1_read_seconds","b1_quiz_seconds","b1_register_switches","b1_seq","b1_c1","b1_c2","b1_c3","b1_c4","b1_c5","b1_c6","b1_comprehension","b2_interface","b2_vignette","b2_register_shown","b2_read_seconds","b2_quiz_seconds","b2_register_switches","b2_seq","b2_c1","b2_c2","b2_c3","b2_c4","b2_c5","b2_c6","b2_comprehension","own_age_group","own_income_b","own_risk_w","own_spend","own_emergency","own_dependents","own_debt_stress","own_income_drop","own_difficulty","own_invests","own_risk_cat","own_register_final","own_register_switches","own_read_seconds","privacy_choice","sus_1","sus_2","sus_3","sus_4","sus_5","sus_6","sus_7","sus_8","sus_9","sus_10","ueq_1","ueq_2","ueq_3","ueq_4","ueq_5","ueq_6","ueq_7","ueq_8","PU_1","PU_2","PU_3","TRUST_1","TRUST_2","TRUST_3","PRIV_1","PRIV_2","PRIV_3","EXPL_1","EXPL_2","EXPL_3","BI_1","BI_2","comment"]},"evidence":{"period":"Apr 2007 to Oct 2026","months":235,"data_as_of":"2026-11-12","evidence":{"Conservative":{"xirr_p50":9.19,"xirr_p05":8.54,"max_dd":-8.99,"worst_year":0.6,"pct_beat_liquid":100.0},"Moderate":{"xirr_p50":10.71,"xirr_p05":9.16,"max_dd":-25.85,"worst_year":-18.74,"pct_beat_liquid":99.14},"Aggressive":{"xirr_p50":12.01,"xirr_p05":9.24,"max_dd":-41.01,"worst_year":-36.58,"pct_beat_liquid":98.28}}},"screener":{"item":"Q5 Probability","wrong":{"item":"Q2 Inflation","wrong":{"item":"Q1 Interest","wrong":{"tier":"Low"},"right":{"item":"Q7 Diversification","wrong":{"tier":"Low"},"right":{"tier":"Medium"}}},"right":{"item":"Q7 Diversification","wrong":{"item":"Q6 Loan tenure","wrong":{"tier":"Low"},"right":{"tier":"Medium"}},"right":{"item":"Q3 Bond price","wrong":{"tier":"Medium"},"right":{"tier":"High"}}}},"right":{"item":"Q7 Diversification","wrong":{"item":"Q4 Compounding","wrong":{"item":"Q1 Interest","wrong":{"tier":"Low"},"right":{"tier":"Medium"}},"right":{"item":"Q2 Inflation","wrong":{"tier":"Medium"},"right":{"tier":"High"}}},"right":{"item":"Q2 Inflation","wrong":{"item":"Q3 Bond price","wrong":{"tier":"Medium"},"right":{"tier":"High"}},"right":{"item":"Q1 Interest","wrong":{"tier":"Medium"},"right":{"tier":"High"}}}}},"summary":{"seed":20261113,"nfcs_rows":52657,"E":{"period":"Apr 2007 to Oct 2026","months":235,"data_as_of":"2026-11-12","asset_cagr_pct":{"NIFTY50_INDEX_FUND":10.06,"GOLD_ETF":13.59,"GILT_FUND":8.23,"LIQUID_FUND":6.96},"evidence":{"Conservative":{"xirr_p50":9.19,"xirr_p05":8.54,"max_dd":-8.99,"worst_year":0.6,"pct_beat_liquid":100.0},"Moderate":{"xirr_p50":10.71,"xirr_p05":9.16,"max_dd":-25.85,"worst_year":-18.74,"pct_beat_liquid":99.14},"Aggressive":{"xirr_p50":12.01,"xirr_p05":9.24,"max_dd":-41.01,"worst_year":-36.58,"pct_beat_liquid":98.28}},"full_period":[{"strategy":"PFW Conservative","cagr_pct":9.61,"volatility_pct":5.87,"sharpe_vs_liquid":0.45,"max_drawdown_pct":-8.99,"worst_calendar_year_pct":0.6,"final_value_of_1_rupee":6.03},{"strategy":"PFW Conservative + trend overlay","cagr_pct":9.49,"volatility_pct":5.14,"sharpe_vs_liquid":0.48,"max_drawdown_pct":-6.98,"worst_calendar_year_pct":2.37,"final_value_of_1_rupee":5.9},{"strategy":"PFW Moderate","cagr_pct":10.5,"volatility_pct":10.41,"sharpe_vs_liquid":0.37,"max_drawdown_pct":-25.85,"worst_calendar_year_pct":-18.74,"final_value_of_1_rupee":7.07},{"strategy":"PFW Moderate + trend overlay","cagr_pct":10.37,"volatility_pct":9.51,"sharpe_vs_liquid":0.38,"max_drawdown_pct":-21.98,"worst_calendar_year_pct":-14.87,"final_value_of_1_rupee":6.91},{"strategy":"PFW Aggressive","cagr_pct":10.93,"volatility_pct":15.18,"sharpe_vs_liquid":0.32,"max_drawdown_pct":-41.01,"worst_calendar_year_pct":-36.58,"final_value_of_1_rupee":7.63},{"strategy":"PFW Aggressive + trend overlay","cagr_pct":10.9,"volatility_pct":14.23,"sharpe_vs_liquid":0.33,"max_drawdown_pct":-37.09,"worst_calendar_year_pct":-32.95,"final_value_of_1_rupee":7.58},{"strategy":"Liquid fund only (FD-like)","cagr_pct":6.96,"volatility_pct":0.53,"sharpe_vs_liquid":null,"max_drawdown_pct":0.0,"worst_calendar_year_pct":3.21,"final_value_of_1_rupee":3.73},{"strategy":"Nifty 50 index only","cagr_pct":10.06,"volatility_pct":20.35,"sharpe_vs_liquid":0.24,"max_drawdown_pct":-55.25,"worst_calendar_year_pct":-51.96,"final_value_of_1_rupee":6.53},{"strategy":"60/40 equity/gilt","cagr_pct":10.15,"volatility_pct":12.74,"sharpe_vs_liquid":0.3,"max_drawdown_pct":-30.44,"worst_calendar_year_pct":-22.17,"final_value_of_1_rupee":6.64},{"strategy":"'100 minus age' at 30 (70/30)","cagr_pct":10.24,"volatility_pct":14.54,"sharpe_vs_liquid":0.28,"max_drawdown_pct":-37.05,"worst_calendar_year_pct":-30.17,"final_value_of_1_rupee":6.74}],"rolling_sip":[{"strategy":"PFW Conservative","sip_horizon_years":5,"windows":176,"xirr_p05_pct":7.73,"xirr_median_pct":9.28,"xirr_p95_pct":10.98,"xirr_min_pct":6.41,"pct_windows_beating_liquid":88.07},{"strategy":"PFW Conservative + trend overlay","sip_horizon_years":5,"windows":176,"xirr_p05_pct":7.54,"xirr_median_pct":9.07,"xirr_p95_pct":10.68,"xirr_min_pct":6.52,"pct_windows_beating_liquid":85.23},{"strategy":"PFW Moderate","sip_horizon_years":5,"windows":176,"xirr_p05_pct":7.55,"xirr_median_pct":10.51,"xirr_p95_pct":13.55,"xirr_min_pct":4.0,"pct_windows_beating_liquid":89.2},{"strategy":"PFW Moderate + trend overlay","sip_horizon_years":5,"windows":176,"xirr_p05_pct":7.52,"xirr_median_pct":10.28,"xirr_p95_pct":13.07,"xirr_min_pct":4.0,"pct_windows_beating_liquid":88.07},{"strategy":"PFW Aggressive","sip_horizon_years":5,"windows":176,"xirr_p05_pct":7.16,"xirr_median_pct":11.44,"xirr_p95_pct":16.25,"xirr_min_pct":1.12,"pct_windows_beating_liquid":88.64},{"strategy":"PFW Aggressive + trend overlay","sip_horizon_years":5,"windows":176,"xirr_p05_pct":7.29,"xirr_median_pct":11.21,"xirr_p95_pct":15.89,"xirr_min_pct":1.15,"pct_windows_beating_liquid":86.93},{"strategy":"Liquid fund only (FD-like)","sip_horizon_years":5,"windows":176,"xirr_p05_pct":4.55,"xirr_median_pct":7.22,"xirr_p95_pct":9.04,"xirr_min_pct":4.4,"pct_windows_beating_liquid":0.0},{"strategy":"Nifty 50 index only","sip_horizon_years":5,"windows":176,"xirr_p05_pct":4.46,"xirr_median_pct":12.37,"xirr_p95_pct":18.19,"xirr_min_pct":-3.21,"pct_windows_beating_liquid":84.09},{"strategy":"60/40 equity/gilt","sip_horizon_years":5,"windows":176,"xirr_p05_pct":5.94,"xirr_median_pct":11.0,"xirr_p95_pct":14.31,"xirr_min_pct":2.47,"pct_windows_beating_liquid":87.5},{"strategy":"'100 minus age' at 30 (70/30)","sip_horizon_years":5,"windows":176,"xirr_p05_pct":5.66,"xirr_median_pct":11.44,"xirr_p95_pct":15.16,"xirr_min_pct":1.16,"pct_windows_beating_liquid":85.8},{"strategy":"PFW Conservative","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.54,"xirr_median_pct":9.19,"xirr_p95_pct":10.11,"xirr_min_pct":7.69,"pct_windows_beating_liquid":100.0},{"strategy":"PFW Conservative + trend overlay","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.24,"xirr_median_pct":9.06,"xirr_p95_pct":9.81,"xirr_min_pct":7.59,"pct_windows_beating_liquid":100.0},{"strategy":"PFW Moderate","sip_horizon_years":10,"windows":116,"xirr_p05_pct":9.16,"xirr_median_pct":10.71,"xirr_p95_pct":12.18,"xirr_min_pct":6.84,"pct_windows_beating_liquid":99.14},{"strategy":"PFW Moderate + trend overlay","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.81,"xirr_median_pct":10.47,"xirr_p95_pct":11.94,"xirr_min_pct":6.69,"pct_windows_beating_liquid":99.14},{"strategy":"PFW Aggressive","sip_horizon_years":10,"windows":116,"xirr_p05_pct":9.24,"xirr_median_pct":12.01,"xirr_p95_pct":14.01,"xirr_min_pct":5.71,"pct_windows_beating_liquid":98.28},{"strategy":"PFW Aggressive + trend overlay","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.85,"xirr_median_pct":11.7,"xirr_p95_pct":13.75,"xirr_min_pct":5.56,"pct_windows_beating_liquid":97.41},{"strategy":"Liquid fund only (FD-like)","sip_horizon_years":10,"windows":116,"xirr_p05_pct":5.71,"xirr_median_pct":6.13,"xirr_p95_pct":8.04,"xirr_min_pct":5.69,"pct_windows_beating_liquid":0.0},{"strategy":"Nifty 50 index only","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.84,"xirr_median_pct":12.64,"xirr_p95_pct":15.23,"xirr_min_pct":4.04,"pct_windows_beating_liquid":96.55},{"strategy":"60/40 equity/gilt","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.97,"xirr_median_pct":11.05,"xirr_p95_pct":12.71,"xirr_min_pct":6.53,"pct_windows_beating_liquid":99.14},{"strategy":"'100 minus age' at 30 (70/30)","sip_horizon_years":10,"windows":116,"xirr_p05_pct":9.05,"xirr_median_pct":11.47,"xirr_p95_pct":13.45,"xirr_min_pct":5.98,"pct_windows_beating_liquid":98.28}],"goal":[{"portfolio":"Conservative","return_assumption":"PFW planning rate","assumed_return_pct":7.0,"pct_windows_goal_met":100.0,"median_final_as_pct_of_goal":110.9,"worst_final_as_pct_of_goal":102.5},{"portfolio":"Conservative","return_assumption":"Flat 10% (RO3 example)","assumed_return_pct":10.0,"pct_windows_goal_met":0.9,"median_final_as_pct_of_goal":93.4,"worst_final_as_pct_of_goal":86.4},{"portfolio":"Conservative","return_assumption":"Flat 12% (common calculator default)","assumed_return_pct":12.0,"pct_windows_goal_met":0.0,"median_final_as_pct_of_goal":83.1,"worst_final_as_pct_of_goal":76.8},{"portfolio":"Moderate","return_assumption":"PFW planning rate","assumed_return_pct":8.0,"pct_windows_goal_met":97.4,"median_final_as_pct_of_goal":113.6,"worst_final_as_pct_of_goal":92.6},{"portfolio":"Moderate","return_assumption":"Flat 10% (RO3 example)","assumed_return_pct":10.0,"pct_windows_goal_met":56.9,"median_final_as_pct_of_goal":101.3,"worst_final_as_pct_of_goal":82.6},{"portfolio":"Moderate","return_assumption":"Flat 12% (common calculator default)","assumed_return_pct":12.0,"pct_windows_goal_met":0.0,"median_final_as_pct_of_goal":90.0,"worst_final_as_pct_of_goal":73.4},{"portfolio":"Aggressive","return_assumption":"PFW planning rate","assumed_return_pct":9.0,"pct_windows_goal_met":92.2,"median_final_as_pct_of_goal":115.0,"worst_final_as_pct_of_goal":82.5},{"portfolio":"Aggressive","return_assumption":"Flat 10% (RO3 example)","assumed_return_pct":10.0,"pct_windows_goal_met":73.3,"median_final_as_pct_of_goal":108.5,"worst_final_as_pct_of_goal":77.9},{"portfolio":"Aggressive","return_assumption":"Flat 12% (common calculator default)","assumed_return_pct":12.0,"pct_windows_goal_met":33.6,"median_final_as_pct_of_goal":96.5,"worst_final_as_pct_of_goal":69.2}],"regime":[{"model":"Random forest","A_label_from_trailing_return_random_split_pct":99.6,"B_forward_label_random_split_pct":64.8,"C_forward_label_purged_walk_forward_pct":47.2,"majority_class_baseline_walk_forward_pct":37.5},{"model":"Gradient boosting","A_label_from_trailing_return_random_split_pct":99.6,"B_forward_label_random_split_pct":55.3,"C_forward_label_purged_walk_forward_pct":41.7,"majority_class_baseline_walk_forward_pct":37.5}],"regime_weeks":1010,"share_months_below_trend_pct":28.1},"A":{"n":52657,"n_2021":27118,"n_2024":25539,"kr20":0.671,"mean_score":3.361,"mean_score_weighted":3.244,"tier_pct_weighted":{"Low":36.31,"Medium":36.09,"High":27.6},"tier_pct":{"Low":33.92,"Medium":36.32,"High":29.77},"wave_shift_cramers_v":0.0216,"overconfident_pct_weighted":9.66,"underconfident_pct_weighted":4.93,"low_tier_rating_5plus_pct":54.17,"self_vs_objective_spearman":0.236,"digital_literacy_spearman":-0.057,"low_lit_low_digital_pct":13.61,"low_lit_high_digital_pct":12.74,"ro1_rule_dropped_pct":15.1,"ro1_rule_dropped_pct_low":26.45,"ro1_rule_dropped_pct_high":6.28,"low_share_before_after_deletion":[33.92,29.38]},"B":{"train_n":27118,"test_n":25539,"table":[{"screener":"Self-rated knowledge only","questions_asked":0.0,"accuracy":41.889,"quadratic_weighted_kappa":0.245,"macro_f1":41.527,"severe_error_pct":10.376},{"screener":"Profile-only model (no quiz)","questions_asked":0.0,"accuracy":50.652,"quadratic_weighted_kappa":0.435,"macro_f1":50.888,"severe_error_pct":8.074},{"screener":"Fixed 'Big Three' (interest, inflation, diversification)","questions_asked":3.0,"accuracy":75.97,"quadratic_weighted_kappa":0.813,"macro_f1":75.885,"severe_error_pct":0.239},{"screener":"Best fixed 3 items: Interest, Inflation, Diversification","questions_asked":3.0,"accuracy":75.97,"quadratic_weighted_kappa":0.813,"macro_f1":75.885,"severe_error_pct":0.239},{"screener":"Best fixed 4 items: Interest, Inflation, Probability, Diversification","questions_asked":4.0,"accuracy":79.204,"quadratic_weighted_kappa":0.836,"macro_f1":79.471,"severe_error_pct":0.0},{"screener":"Adaptive optimal tree (at most 3 questions)","questions_asked":3.0,"accuracy":77.693,"quadratic_weighted_kappa":0.808,"macro_f1":78.302,"severe_error_pct":0.18},{"screener":"Adaptive optimal tree (at most 4 questions)","questions_asked":3.838,"accuracy":84.291,"quadratic_weighted_kappa":0.873,"macro_f1":84.678,"severe_error_pct":0.0},{"screener":"Full 7-item quiz (reference)","questions_asked":7.0,"accuracy":100.0,"quadratic_weighted_kappa":1.0,"macro_f1":100.0,"severe_error_pct":0.0}]},"C":{"n_personas":3000,"friedman_chi2":6000.0,"friedman_p":0.0,"kendall_w":1.0,"fk_grade_mean":{"Plain":2.2,"Guided":8.06,"Expert":15.76},"fre_mean":{"Plain":97.32,"Guided":72.57,"Expert":25.04},"jargon_mean":{"Plain":0.0,"Guided":3.97,"Expert":28.51},"parity_pass_pct":{"Plain":100.0,"Guided":100.0,"Expert":100.0},"min_contrast":7.33},"D":{"n":52657,"attributes":10,"chance_flip_pct":66.25,"grr_flip_pct":{"0.5":66.365,"1.0":65.873,"2.0":65.384,"4.0":63.863,"8.0":59.977,"16.0":49.708,"32.0":22.047,"64.0":1.29,"128.0":0.001},"ordinal_flip_pct":{"0.5":66.1,"1.0":65.848,"2.0":64.931,"4.0":63.195,"8.0":59.88,"16.0":53.245,"32.0":41.061,"64.0":25.295,"128.0":11.144},"output_flip_pct":{"0.5":54.737,"1.0":42.411,"2.0":21.354,"4.0":3.503,"8.0":0.073,"16.0":0.0,"32.0":0.0,"64.0":0.0,"128.0":0.0},"output_flip_pct_analytic":{"0.5":54.814,"1":42.388,"2":21.301,"4":3.534,"8":0.067,"16":0.0,"32":0.0,"64":0.0,"128":0.0},"grr_equity_shift_pp":{"0.5":22.289,"1.0":22.128,"2.0":21.938,"4.0":21.365,"8.0":19.927,"16.0":16.265,"32.0":6.995,"64.0":0.405,"128.0":0.0},"aggregate_mae_pp_input_level":{"0.5":7.296,"1.0":3.569,"2.0":1.815,"4.0":0.921,"8.0":0.458,"16.0":0.207,"32.0":0.073,"64.0":0.014,"128.0":0.0},"aggregate_mae_pp_output_level":{"0.5":0.974,"1.0":0.443,"2.0":0.174,"4.0":0.057,"8.0":0.007,"16.0":0.0,"32.0":0.0,"64.0":0.0,"128.0":0.0},"true_emergency_fund_pct":50.36,"true_aggressive_pct":31.6,"flip_by_tier_eps8_grr":{"Low":60.12,"Medium":59.854,"High":59.966},"threshold_sensitivity_eps8":[{"risk_cut_shift":-0.05,"category_flip_pct_at_eps8":59.44},{"risk_cut_shift":0.0,"category_flip_pct_at_eps8":60.22},{"risk_cut_shift":0.05,"category_flip_pct_at_eps8":58.72}]},"F":{"ro1_n_after_deletion":22755,"ro1_n_2021":27118,"silhouette":[{"k":2,"silhouette_nfcs":0.2478,"silhouette_gaussian_noise":0.0504},{"k":3,"silhouette_nfcs":0.1633,"silhouette_gaussian_noise":0.0445},{"k":4,"silhouette_nfcs":0.1645,"silhouette_gaussian_noise":0.0433},{"k":5,"silhouette_nfcs":0.1197,"silhouette_gaussian_noise":0.0435},{"k":6,"silhouette_nfcs":0.1174,"silhouette_gaussian_noise":0.0438}],"cluster_then_classify":[{"data":"NFCS 2021, RO1's 13 features","n":22755,"logistic_accuracy_predicting_own_kmeans_labels_pct":99.877,"silhouette_k2":0.248,"bootstrap_stability_ari":0.993},{"data":"Pure Gaussian noise, same shape","n":22755,"logistic_accuracy_predicting_own_kmeans_labels_pct":99.855,"silhouette_k2":0.05,"bootstrap_stability_ari":0.027}]},"G":{"analytic":[{"test":"One-way ANOVA across 3 literacy tiers (SUS)","effect_size":"f = 0.25","total_n_for_80pct_power":159},{"test":"One-way ANOVA across 3 literacy tiers (SUS)","effect_size":"f = 0.3","total_n_for_80pct_power":111},{"test":"One-way ANOVA across 3 literacy tiers (SUS)","effect_size":"f = 0.4","total_n_for_80pct_power":66},{"test":"Paired t-test, adaptive vs standard, within one tier","effect_size":"dz = 0.4","total_n_for_80pct_power":52},{"test":"Paired t-test, adaptive vs standard, within one tier","effect_size":"dz = 0.5","total_n_for_80pct_power":34},{"test":"Paired t-test, adaptive vs standard, within one tier","effect_size":"dz = 0.6","total_n_for_80pct_power":24}],"simulated":[{"n_per_tier":20,"total_n":60,"power_tier_x_interface_interaction":0.361,"power_adaptive_gain_in_low_tier":0.725},{"n_per_tier":30,"total_n":90,"power_tier_x_interface_interaction":0.52,"power_adaptive_gain_in_low_tier":0.887},{"n_per_tier":40,"total_n":120,"power_tier_x_interface_interaction":0.661,"power_adaptive_gain_in_low_tier":0.958},{"n_per_tier":50,"total_n":150,"power_tier_x_interface_interaction":0.752,"power_adaptive_gain_in_low_tier":0.985},{"n_per_tier":60,"total_n":180,"power_tier_x_interface_interaction":0.847,"power_adaptive_gain_in_low_tier":0.996},{"n_per_tier":80,"total_n":240,"power_tier_x_interface_interaction":0.925,"power_adaptive_gain_in_low_tier":1.0}],"assumed_gain_sd_units":{"Low":0.6,"Medium":0.3,"High":0.0},"within_subject_correlation":0.5,"n_sim":4000}},"nfcs":{"n":52657,"n_2021":27118,"n_2024":25539,"score_dist":{"2021":[9.192190477873117,12.100744017839196,15.710754130638572,18.069423496200084,17.045466250327944,14.107454048953254,9.604852805441597,4.169114772726229],"2024":[8.776723292886977,11.171359270042435,15.620559159232819,18.61152466938278,18.514624805630824,14.27927537082761,9.174557495809204,3.8513759361873485]},"groups":[{"group":"All adults","n":52657,"mean_literacy":3.244490628318374,"mean_resilience":2.494775365977378,"tier_Low":36.30768120309036,"tier_Medium":36.09036427425599,"tier_High":27.601954522653642,"Has emergency savings":49.6264205507844,"Spends less than income":40.61117795176452,"No difficulty paying bills":48.982030928806076,"Could raise $2,000 in a month":63.930488961880805,"Does not feel over-indebted":46.32741820450191,"Holds non-retirement investments":34.14192029974158,"Satisfied with finances (7-10 of 10)":42.31415867372614,"Willing to take investment risk (7-10 of 10)":29.73837199158846},{"group":"Low literacy","n":17859,"mean_literacy":1.1838818301811016,"mean_resilience":1.9314894202246664,"tier_Low":100.0,"tier_Medium":0.0,"tier_High":0.0,"Has emergency savings":36.43919065160479,"Spends less than income":31.461753414287912,"No difficulty paying bills":38.21824106488633,"Could raise $2,000 in a month":48.550211844189334,"Does not feel over-indebted":38.479545047498256,"Holds non-retirement investments":19.141219914911048,"Satisfied with finances (7-10 of 10)":35.95920853405741,"Willing to take investment risk (7-10 of 10)":27.258949486664307},{"group":"Medium literacy","n":19124,"mean_literacy":3.4920431924545103,"mean_resilience":2.467560738810864,"tier_Low":0.0,"tier_Medium":100.0,"tier_High":0.0,"Has emergency savings":49.03121320025103,"Spends less than income":40.25801548176817,"No difficulty paying bills":47.334482167529366,"Could raise $2,000 in a month":65.56581852207943,"Does not feel over-indebted":44.566544509458424,"Holds non-retirement investments":33.01926914827688,"Satisfied with finances (7-10 of 10)":39.82171159090862,"Willing to take investment risk (7-10 of 10)":27.434486507722234},{"group":"High literacy","n":15674,"mean_literacy":5.631338453036047,"mean_resilience":3.271307054521641,"tier_Low":0.0,"tier_Medium":0.0,"tier_High":100.0,"Has emergency savings":67.7511873610531,"Spends less than income":53.10812454319144,"No difficulty paying bills":65.29496577915452,"Could raise $2,000 in a month":82.02350329745725,"Does not feel over-indebted":58.95292447130777,"Holds non-retirement investments":55.34177902440264,"Satisfied with finances (7-10 of 10)":53.932423844861844,"Willing to take investment risk (7-10 of 10)":36.01220843651596},{"group":"Men","n":24701,"mean_literacy":3.6219067412712893,"mean_resilience":2.6663665148943325,"tier_Low":29.44499028717469,"tier_Medium":34.89571165857508,"tier_High":35.65929805425023,"Has emergency savings":53.90594143989278,"Spends less than income":42.312952463817126,"No difficulty paying bills":52.584564413864044,"Could raise $2,000 in a month":68.59034636589817,"Does not feel over-indebted":49.24284680596113,"Holds non-retirement investments":41.05420985515116,"Satisfied with finances (7-10 of 10)":47.43134370756957,"Willing to take investment risk (7-10 of 10)":39.670910021093334},{"group":"Women","n":27956,"mean_literacy":2.8843023623059514,"mean_resilience":2.3310168080612557,"tier_Low":42.85711207355043,"tier_Medium":37.230484792064914,"tier_High":19.912403134384657,"Has emergency savings":45.542246199160516,"Spends less than income":38.98708404161173,"No difficulty paying bills":45.54394165624607,"Could raise $2,000 in a month":59.483339249362956,"Does not feel over-indebted":43.5450696597443,"Holds non-retirement investments":27.54515481016282,"Satisfied with finances (7-10 of 10)":37.43055688528125,"Willing to take investment risk (7-10 of 10)":20.25922277890998},{"group":"Age 18-24","n":5477,"mean_literacy":2.4596451111047246,"mean_resilience":2.0841437483613046,"tier_Low":53.94828221404233,"tier_Medium":31.941740411860266,"tier_High":14.10997737409739,"Has emergency savings":38.844176030810196,"Spends less than income":35.287640983174654,"No difficulty paying bills":35.00590844290949,"Could raise $2,000 in a month":52.876775645819905,"Does not feel over-indebted":46.39987373341619,"Holds non-retirement investments":27.44819993814956,"Satisfied with finances (7-10 of 10)":34.37111384793493,"Willing to take investment risk (7-10 of 10)":37.27639755305337},{"group":"Age 25-34","n":8627,"mean_literacy":2.7634354294677634,"mean_resilience":1.9899705715917204,"tier_Low":46.413659967965486,"tier_Medium":34.96440160228532,"tier_High":18.621938429749186,"Has emergency savings":40.338456561372546,"Spends less than income":32.32874884140994,"No difficulty paying bills":36.02117439731358,"Could raise $2,000 in a month":54.96445530152173,"Does not feel over-indebted":35.34422205755425,"Holds non-retirement investments":30.304937762892685,"Satisfied with finances (7-10 of 10)":36.174680990213695,"Willing to take investment risk (7-10 of 10)":38.49993349687901},{"group":"Age 35-44","n":8936,"mean_literacy":3.027782967457632,"mean_resilience":2.1680449131869937,"tier_Low":41.38149991346008,"tier_Medium":35.04587145133453,"tier_High":23.5726286352054,"Has emergency savings":43.153303481183926,"Spends less than income":35.28535644912183,"No difficulty paying bills":41.976277615538486,"Could raise $2,000 in a month":59.510034064298075,"Does not feel over-indebted":36.87951970855707,"Holds non-retirement investments":32.41388758004333,"Satisfied with finances (7-10 of 10)":36.51111295374645,"Willing to take investment risk (7-10 of 10)":36.1820811279742},{"group":"Age 45-54","n":8847,"mean_literacy":3.3244774490021407,"mean_resilience":2.2814967918235167,"tier_Low":34.033990626590175,"tier_Medium":37.40011368162247,"tier_High":28.565895691787347,"Has emergency savings":44.13455831658998,"Spends less than income":39.61339752294334,"No difficulty paying bills":45.44544792003524,"Could raise $2,000 in a month":59.703202441166816,"Does not feel over-indebted":39.253072981616306,"Holds non-retirement investments":30.56336725501137,"Satisfied with finances (7-10 of 10)":34.85484491300204,"Willing to take investment risk (7-10 of 10)":30.65868591518549},{"group":"Age 55-64","n":9273,"mean_literacy":3.6097811983626134,"mean_resilience":2.749800487635831,"tier_Low":28.058157940774976,"tier_Medium":38.084259177153825,"tier_High":33.85758288207119,"Has emergency savings":54.42484950747522,"Spends less than income":45.75552792499426,"No difficulty paying bills":56.016575235119014,"Could raise $2,000 in a month":68.2582173630298,"Does not feel over-indebted":50.524878732964794,"Holds non-retirement investments":35.50198885676675,"Satisfied with finances (7-10 of 10)":44.743521062277026,"Willing to take investment risk (7-10 of 10)":22.927591870356345},{"group":"Age 65+","n":11497,"mean_literacy":3.9024586911256303,"mean_resilience":3.3657701435464307,"tier_Low":22.357260469351253,"tier_Medium":37.55037362454714,"tier_High":40.0923659061016,"Has emergency savings":69.01672554916212,"Spends less than income":51.29004600306328,"No difficulty paying bills":70.30947986291275,"Could raise $2,000 in a month":80.99489855496404,"Does not feel over-indebted":64.96586438454084,"Holds non-retirement investments":44.24859755645782,"Satisfied with finances (7-10 of 10)":60.42730438105629,"Willing to take investment risk (7-10 of 10)":17.964960636809394}],"indicators":["Has emergency savings","Spends less than income","No difficulty paying bills","Could raise $2,000 in a month","Does not feel over-indebted"],"extra_indicators":["Holds non-retirement investments","Satisfied with finances (7-10 of 10)","Willing to take investment risk (7-10 of 10)"],"resilience_dist":{"All adults":[17.156365048733548,17.97619812778353,16.061376702902173,14.08102375908205,16.48966802058981,18.235368340908888],"Low literacy":[22.785124612169902,23.448027702560566,19.5693001735927,14.166563461329746,12.092296663003967,7.938687387343108],"Medium literacy":[17.27540220052187,17.890249760691614,16.40532611195371,14.855624562478148,16.378688612720403,17.194708751634263],"High literacy":[9.596635834737176,10.890919592127144,10.997321314776105,12.955691370912941,22.41909031948726,33.140341567959375]},"risk_cat_by_tier":{"Low":{"Conservative":40.865637122088685,"Moderate":30.179659798483755,"Aggressive":28.954703079427556},"Medium":{"Conservative":39.755560097019014,"Moderate":30.936381085405117,"Aggressive":29.308058817575876},"High":{"Conservative":28.003980718303705,"Moderate":30.675582619956614,"Aggressive":41.32043666173968}},"self_rating":[{"rating":1,"pct_low_tier":70.68690095846645,"mean_score":1.7595846645367412},{"rating":2,"pct_low_tier":50.99778270509978,"mean_score":2.436807095343681},{"rating":3,"pct_low_tier":45.53546592489569,"mean_score":2.7006954102920724},{"rating":4,"pct_low_tier":41.823444283646886,"mean_score":2.9150299772586314},{"rating":5,"pct_low_tier":29.716414323479935,"mean_score":3.5100937274693584},{"rating":6,"pct_low_tier":21.920065925010302,"mean_score":4.016316440049444},{"rating":7,"pct_low_tier":30.211833455076697,"mean_score":3.639590942293645}]},"market":{"months":["2007-04","2007-05","2007-06","2007-07","2007-08","2007-09","2007-10","2007-11","2007-12","2008-01","2008-02","2008-03","2008-04","2008-05","2008-06","2008-07","2008-08","2008-09","2008-10","2008-11","2008-12","2009-01","2009-02","2009-03","2009-04","2009-05","2009-06","2009-07","2009-08","2009-09","2009-10","2009-11","2009-12","2010-01","2010-02","2010-03","2010-04","2010-05","2010-06","2010-07","2010-08","2010-09","2010-10","2010-11","2010-12","2011-01","2011-02","2011-03","2011-04","2011-05","2011-06","2011-07","2011-08","2011-09","2011-10","2011-11","2011-12","2012-01","2012-02","2012-03","2012-04","2012-05","2012-06","2012-07","2012-08","2012-09","2012-10","2012-11","2012-12","2013-01","2013-02","2013-03","2013-04","2013-05","2013-06","2013-07","2013-08","2013-09","2013-10","2013-11","2013-12","2014-01","2014-02","2014-03","2014-04","2014-05","2014-06","2014-07","2014-08","2014-09","2014-10","2014-11","2014-12","2015-01","2015-02","2015-03","2015-04","2015-05","2015-06","2015-07","2015-08","2015-09","2015-10","2015-11","2015-12","2016-01","2016-02","2016-03","2016-04","2016-05","2016-06","2016-07","2016-08","2016-09","2016-10","2016-11","2016-12","2017-01","2017-02","2017-03","2017-04","2017-05","2017-06","2017-07","2017-08","2017-09","2017-10","2017-11","2017-12","2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10"],"returns":[[0.069747,-0.032267,0.006359,0.007966],[0.049603,-0.044561,0.005933,0.007216],[0.006591,-0.012406,0.003064,0.004681],[0.048503,0.019018,0.025001,0.00578],[-0.013786,0.013655,0.003974,0.006284],[0.12328,0.069416,0.001593,0.00631],[0.172624,0.048412,0.0119,0.0064],[-0.024754,0.02288,0.006215,0.006533],[0.057781,0.044167,0.024924,0.006924],[-0.165181,0.101602,0.033531,0.006813],[0.016984,0.061601,-0.006357,0.006465],[-0.095037,-0.032076,-0.034759,0.007125],[0.089488,-0.06295,-0.000532,0.006707],[-0.056998,0.065401,0.004206,0.006743],[-0.170285,0.067904,-0.009819,0.007225],[0.072334,-0.033205,0.004077,0.007508],[0.006848,-0.054884,0.021433,0.007718],[-0.099316,0.14699,0.026288,0.007593],[-0.264155,-0.147139,0.108244,0.007816],[-0.045121,0.127787,0.037466,0.007029],[0.073414,0.032349,0.149952,0.006792],[-0.028409,0.074589,-0.066309,0.00621],[-0.039241,0.061955,-0.022186,0.005396],[0.091622,-0.02315,-0.023012,0.005661],[0.147961,-0.040501,0.057435,0.004489],[0.27565,0.020948,0.002066,0.004321],[-0.036171,-0.02068,-0.000312,0.004002],[0.081955,0.007483,0.000893,0.004048],[0.005533,0.032601,-0.028919,0.003722],[0.089336,0.033552,0.014327,0.003366],[-0.073261,0.018541,-0.001475,0.003528],[0.066196,0.107935,0.012242,0.003454],[0.031924,-0.054042,-0.007663,0.003437],[-0.062569,-0.02618,0.006245,0.003038],[0.007614,0.023219,-0.00885,0.002549],[0.066394,-0.020597,0.00394,0.003588],[0.004627,0.041055,0.003622,0.003525],[-0.036416,0.077247,0.011544,0.003786],[0.047479,0.02381,0.006376,0.003897],[0.010189,-0.060968,-0.003689,0.004256],[0.007751,0.067902,0.008087,0.004594],[0.115679,0.012894,0.004486,0.004541],[-0.002194,0.009979,-0.000241,0.00536],[-0.027149,0.061268,0.007323,0.005358],[0.045421,-0.002624,0.013003,0.005812],[-0.103758,-0.03067,-0.000872,0.006483],[-0.032205,0.037979,0.00748,0.00607],[0.092406,0.002243,0.006651,0.007161],[-0.014701,0.061538,-0.002162,0.006512],[-0.032411,0.01746,0.001154,0.007362],[0.019247,-0.026054,0.009622,0.006972],[-0.028737,0.054892,-0.000542,0.007379],[-0.087565,0.148689,0.011676,0.007149],[-0.012668,-0.033236,0.000794,0.007128],[0.076801,0.051558,-0.009526,0.007735],[-0.09363,0.056753,0.011578,0.007244],[-0.043975,-0.056264,0.022035,0.007431],[0.123835,0.03928,0.021145,0.008174],[0.034288,0.011559,0.009779,0.007297],[-0.017404,-0.011912,-0.006222,0.008335],[-0.010235,0.028059,0.00352,0.008875],[-0.059219,0.011805,0.019937,0.008076],[0.075605,0.000684,0.008818,0.007278],[-0.008068,0.020607,0.00425,0.007866],[0.008093,0.020146,0.005112,0.007493],[0.083623,0.016228,0.012508,0.007029],[-0.013141,-0.010205,0.003338,0.007156],[0.045612,0.012862,0.005516,0.006845],[0.003236,-0.032955,0.017515,0.007195],[0.020608,-0.001412,0.015266,0.007037],[-0.057745,-0.040301,0.007843,0.006247],[-0.002223,0.014554,-0.002299,0.006744],[0.04197,-0.084488,0.031134,0.008512],[0.012626,-0.006004,0.032654,0.00711],[-0.022919,-0.072443,-0.011779,0.006238],[-0.01671,0.118518,-0.054123,0.005746],[-0.047184,0.165459,-0.033951,0.008467],[0.046936,-0.094829,0.004489,0.009059],[0.10018,-0.022164,0.025994,0.008601],[-0.018337,-0.051334,-0.010146,0.007388],[0.019748,-0.043561,0.001747,0.007887],[-0.034525,0.042125,0.007357,0.007446],[0.029977,0.058843,6.9e-05,0.006589],[0.066775,-0.055897,0.01581,0.008338],[-0.002439,0.001133,0.009697,0.007574],[0.080516,-0.048709,0.02613,0.007235],[0.054693,0.055577,0.006971,0.007304],[0.01785,-0.008243,0.007933,0.007181],[0.030805,-0.000136,0.001127,0.007218],[0.00139,-0.045185,0.012983,0.007105],[0.045453,-0.029245,0.032171,0.007339],[0.031383,0.011381,0.019177,0.006985],[-0.035559,0.035855,0.027628,0.007131],[0.062575,0.026288,0.024712,0.00688],[0.003857,-0.044512,0.003485,0.006421],[-0.037736,-0.013591,0.001127,0.007696],[-0.036997,0.036142,-0.003541,0.007155],[0.029849,-0.004097,0.001883,0.0071],[-0.00409,-0.015261,-0.013878,0.006675],[0.021377,-0.078489,0.01611,0.006762],[-0.065359,0.075902,0.009177,0.006577],[-0.001754,-0.007609,0.025453,0.006329],[0.015616,0.013083,0.000147,0.006234],[-0.015967,-0.058265,-0.007775,0.006317],[0.00107,-0.000752,-0.002119,0.006348],[-0.047675,0.070764,-0.007286,0.006324],[-0.075528,0.118576,0.003068,0.006011],[0.10806,-0.03236,0.038388,0.007506],[0.014504,0.032263,0.013889,0.006562],[0.040629,-0.038389,0.004647,0.006794],[0.019004,0.092569,0.015841,0.006203],[0.043988,0.003543,0.037274,0.006128],[0.017769,-0.015898,0.017988,0.005881],[-0.019379,0.004159,0.01525,0.005572],[0.003551,-0.044255,0.003936,0.005746],[-0.047389,-0.038973,0.057761,0.005545],[-0.00509,-0.033424,-0.029786,0.005109],[0.045529,0.034978,0.012208,0.005639],[0.037632,0.023626,-0.036138,0.004957],[0.033294,-0.034543,0.014765,0.005659],[0.013468,0.009274,-0.006501,0.004922],[0.034314,-0.004107,0.020675,0.005734],[-0.006417,-0.002231,0.036434,0.005207],[0.060236,-0.012368,0.007758,0.005434],[-0.014148,0.029848,-0.000365,0.005281],[-0.012309,0.006099,-0.005704,0.004897],[0.055777,-0.017095,-0.004488,0.005383],[-0.010197,-0.002918,-0.007499,0.005055],[0.029524,-5.9e-05,-0.008922,0.005281],[0.046981,0.030632,-0.00605,0.005376],[-0.047208,0.004825,-0.007839,0.004963],[-0.0338,0.01363,0.035975,0.006477],[0.060678,0.005701,-0.008678,0.004959],[0.001535,0.002096,0.00339,0.006148],[4.2e-05,-0.025935,0.001323,0.005844],[0.06156,-0.023534,0.011606,0.006175],[0.029642,0.017709,0.004913,0.005851],[-0.06377,0.006065,0.004305,0.005607],[-0.048821,0.045238,0.005985,0.006136],[0.047154,-0.050728,0.007239,0.006274],[-0.001048,0.045532,0.014322,0.006197],[-0.002604,0.047524,0.003995,0.006044],[-0.00235,0.003985,0.001138,0.005198],[0.077662,-0.053124,0.01703,0.006445],[0.010545,0.003611,-0.001404,0.005733],[0.016008,0.009233,0.019115,0.006234],[-0.009172,0.073361,0.01685,0.005446],[-0.054572,0.033996,0.028592,0.005565],[-0.006523,0.111435,-0.002157,0.004914],[0.040716,-0.039411,9e-06,0.004618],[0.036823,0.013639,0.008207,0.004774],[0.014942,-0.020402,0.002667,0.00425],[0.009211,0.035261,0.009671,0.004093],[-0.016967,0.040381,0.003418,0.004131],[-0.063559,0.040552,0.02537,0.004007],[-0.232691,0.027421,0.006527,0.005605],[0.146672,0.066617,0.023391,0.004135],[-0.027747,0.009487,0.027311,0.004074],[0.075628,0.025132,0.002879,0.002939],[0.076704,0.105095,0.012182,0.002623],[0.0295,-0.026595,-0.018381,0.002698],[-0.012252,-0.036977,0.010599,0.00254],[0.036777,0.00478,0.017032,0.002732],[0.114158,-0.036411,0.004979,0.002586],[0.078151,0.02497,0.005073,0.002251],[-0.024664,-0.021085,0.000214,0.002284],[0.066992,-0.052552,-0.011257,0.002457],[0.011457,-0.052153,0.006767,0.002667],[-0.003831,0.060393,0.007292,0.002477],[0.066629,0.045803,0.005633,0.00259],[0.01104,-0.049446,0.000941,0.002688],[0.004097,0.036499,0.001041,0.002786],[0.086979,-0.02444,0.013472,0.002872],[0.028566,-0.029156,0.012875,0.002356],[0.004044,0.04325,-0.001876,0.002542],[-0.038642,0.004163,0.011938,0.003031],[0.021791,-0.000856,-0.00968,0.002916],[-0.000782,-0.005401,-0.009772,0.00272],[-0.030099,0.063307,0.007524,0.002751],[0.039554,0.018415,0.000536,0.003154],[-0.020559,0.003291,-0.001373,0.002849],[-0.026751,-0.019408,-0.003536,0.003024],[-0.047202,-0.007512,-0.002888,0.003812],[0.088619,0.012102,0.010691,0.003739],[0.03684,-0.004719,0.015267,0.004594],[-0.037695,-0.018971,0.007706,0.0042],[0.054599,-0.003613,0.002395,0.004875],[0.041457,0.056044,0.00678,0.005337],[-0.035076,0.042101,0.002975,0.005619],[-0.02458,0.024658,0.002077,0.005258],[-0.019735,-0.024958,0.006655,0.004792],[0.002868,0.074913,0.009691,0.006446],[0.040773,0.004959,0.010634,0.005626],[0.028378,0.003182,0.009683,0.005874],[0.036615,-0.038796,0.004277,0.005377],[0.030407,0.024477,0.007138,0.005661],[-0.023265,-0.001021,0.008094,0.005557],[0.019633,-0.028414,0.004598,0.005591],[-0.027803,0.059033,0.002455,0.005593],[0.055518,0.021328,0.006801,0.005597],[0.079,0.007247,0.00753,0.006036],[-0.000187,-0.006166,0.006146,0.00598],[0.01284,-0.009776,0.00838,0.00593],[0.015208,0.080529,0.008086,0.00654],[0.012085,0.064336,-0.002542,0.006165],[-0.000103,0.007581,0.013549,0.005931],[0.067068,-0.008332,0.004532,0.005637],[0.039553,-0.035426,0.009182,0.006031],[0.013323,0.036893,0.008117,0.005739],[0.022512,0.04567,0.009257,0.005812],[-0.061384,0.053535,0.002597,0.005818],[-0.002788,-0.035252,0.007239,0.005573],[-0.020384,-0.006984,0.004453,0.005778],[-0.00472,0.075583,0.006357,0.005836],[-0.057999,0.035382,0.002649,0.005376],[0.06276,0.062991,0.01804,0.006794],[0.034608,0.039069,0.018397,0.005938],[0.019005,0.011179,0.008445,0.005491],[0.033346,0.005705,-0.002349,0.005038],[-0.027843,0.023958,0.004577,0.004822],[-0.012315,0.038542,-0.013011,0.004635],[0.007374,0.122928,0.011216,0.004681],[0.045901,0.04824,0.005146,0.004737],[0.019081,0.045046,0.001183,0.004788],[-0.003066,0.050958,0.005337,0.004981],[-0.03064,0.234944,0.002769,0.004451],[-0.005352,-0.035552,0.005969,0.00504],[-0.113291,-0.074257,-0.020921,0.004957],[0.074555,0.019716,0.011924,0.006628],[-0.017393,0.039966,0.004432,0.004843],[0.016501,-0.095997,0.030176,0.006388],[0.023374,0.009278,-0.002076,0.004997],[-0.01167,0.087806,-0.000677,0.005328],[-0.060633,-0.048232,-0.01027,0.004721],[0.019276,-0.05248,-0.013778,0.004618]],"series":{"Conservative":[1.0188,1.0321,1.0353,1.0614,1.0619,1.107,1.1749,1.1722,1.2101,1.171,1.1838,1.1362,1.1566,1.1499,1.1065,1.1242,1.1307,1.1344,1.1013,1.1271,1.2174,1.1875,1.1797,1.1821,1.2464,1.3448,1.328,1.3649,1.3598,1.4116,1.3783,1.4286,1.4346,1.4035,1.4071,1.4391,1.45,1.4559,1.4812,1.4748,1.4944,1.5438,1.5468,1.5521,1.5793,1.5327,1.5338,1.5748,1.5805,1.575,1.5865,1.5878,1.5912,1.5842,1.6184,1.6062,1.5959,1.6588,1.6828,1.6745,1.6814,1.6747,1.7133,1.7202,1.7341,1.7834,1.7814,1.8113,1.8214,1.8444,1.8179,1.8215,1.8498,1.8801,1.8526,1.8299,1.8198,1.8293,1.8923,1.8718,1.8799,1.8782,1.9066,1.9453,1.9554,2.0072,2.0554,2.0736,2.096,2.1017,2.1505,2.1902,2.2,2.2664,2.2671,2.2461,2.2355,2.2569,2.2448,2.2559,2.2466,2.2685,2.2842,2.2605,2.2637,2.2523,2.2482,2.3265,2.3583,2.3817,2.4323,2.4964,2.524,2.5297,2.5286,2.5447,2.5091,2.5606,2.56,2.5919,2.601,2.6455,2.6782,2.7273,2.7287,2.7201,2.7544,2.7431,2.7605,2.8024,2.7634,2.7803,2.8198,2.8299,2.8289,2.8844,2.9222,2.8814,2.8681,2.9002,2.9315,2.9524,2.9575,3.023,3.0357,3.0767,3.1151,3.1208,3.1561,3.1749,3.2212,3.2324,3.2672,3.2766,3.2755,3.1286,3.2937,3.3064,3.3869,3.5117,3.5124,3.5006,3.5624,3.6792,3.7887,3.7522,3.8064,3.8151,3.847,3.9394,3.934,3.9575,4.0584,4.0989,4.121,4.0982,4.1118,4.0983,4.1038,4.1598,4.1413,4.1046,4.0554,4.1641,4.2282,4.197,4.2614,4.3456,4.3356,4.3297,4.3138,4.373,4.4434,4.4998,4.5393,4.6054,4.5961,4.6226,4.6244,4.7196,4.8443,4.8594,4.8946,4.9747,5.0265,5.0628,5.1593,5.219,5.2797,5.3613,5.3159,5.3134,5.299,5.3559,5.314,5.4755,5.5893,5.6481,5.7033,5.6927,5.6798,5.7957,5.9134,5.9853,6.0382,6.1913,6.169,5.8978,6.0557,6.0701,6.1105,6.1572,6.1966,6.0561,6.0331],"Moderate":[1.0344,1.0592,1.0633,1.0997,1.0948,1.1747,1.297,1.2831,1.339,1.2295,1.2477,1.1708,1.2168,1.1901,1.094,1.1285,1.1332,1.1056,0.9928,1.0049,1.0881,1.0617,1.049,1.0695,1.1603,1.333,1.303,1.3666,1.3669,1.4483,1.385,1.456,1.4759,1.418,1.4251,1.4816,1.4932,1.4831,1.5244,1.5213,1.5421,1.6355,1.6364,1.628,1.6715,1.5772,1.5633,1.6374,1.6362,1.6153,1.6314,1.6197,1.5856,1.5719,1.6338,1.5823,1.551,1.6509,1.6847,1.6683,1.6682,1.6317,1.6962,1.6968,1.7113,1.7913,1.7809,1.8282,1.8349,1.8627,1.8056,1.8069,1.8459,1.8739,1.8362,1.8146,1.7867,1.8133,1.9146,1.8847,1.9,1.8774,1.9183,1.9847,1.9896,2.0749,2.1497,2.1745,2.2126,2.2143,2.282,2.3356,2.3144,2.4129,2.4133,2.3643,2.3295,2.3662,2.3518,2.3698,2.3165,2.3302,2.3531,2.3187,2.3208,2.2816,2.2343,2.3575,2.3927,2.4371,2.4941,2.5758,2.6087,2.5955,2.5937,2.5614,2.5284,2.6038,2.6359,2.6849,2.7031,2.7648,2.7821,2.8707,2.8596,2.8412,2.9161,2.8966,2.9371,3.0164,2.9377,2.9165,3.0025,3.0106,3.0066,3.1064,3.1663,3.0658,3.0085,3.0727,3.0976,3.1134,3.1143,3.2356,3.2555,3.3031,3.3285,3.2773,3.3083,3.3576,3.4316,3.4529,3.4926,3.4848,3.4193,3.0739,3.3397,3.3173,3.4589,3.647,3.6818,3.6529,3.744,3.9753,4.1713,4.1032,4.2412,4.2611,4.2881,4.4579,4.4623,4.4909,4.6959,4.7696,4.7987,4.7161,4.7608,4.7472,4.7102,4.819,4.7714,4.6969,4.5842,4.7993,4.9067,4.8171,4.9518,5.094,5.0309,4.9881,4.9386,5.0008,5.1227,5.2148,5.3028,5.4125,5.3602,5.4112,5.368,5.5458,5.7951,5.8041,5.8554,5.9617,6.0378,6.0678,6.2767,6.4009,6.4857,6.6106,6.4427,6.4255,6.367,6.4181,6.2694,6.5386,6.7131,6.8045,6.9244,6.8543,6.8216,6.9605,7.1719,7.2864,7.3354,7.4556,7.4103,6.8957,7.1938,7.1702,7.2196,7.3138,7.3326,7.0572,7.0691],"Aggressive":[1.0501,1.0866,1.0915,1.1372,1.127,1.242,1.4185,1.3933,1.4662,1.2849,1.3091,1.2053,1.2789,1.2311,1.0804,1.1328,1.1347,1.073,0.8694,0.8649,0.9299,0.9131,0.8974,0.9391,1.0451,1.2702,1.2312,1.3136,1.3198,1.4211,1.3366,1.4209,1.4516,1.3745,1.3846,1.4584,1.4703,1.4439,1.4993,1.5002,1.5211,1.6549,1.6542,1.6321,1.6896,1.5517,1.5231,1.6275,1.6198,1.5846,1.6046,1.5804,1.5089,1.4894,1.5786,1.4884,1.4356,1.5681,1.6103,1.5877,1.5813,1.5172,1.6032,1.5983,1.6127,1.7179,1.7003,1.7622,1.7643,1.7948,1.7111,1.7108,1.7562,1.7785,1.7346,1.7204,1.6807,1.7226,1.8538,1.818,1.8398,1.7988,1.85,1.939,1.9383,2.0515,2.1496,2.1798,2.2326,2.2296,2.3106,2.3744,2.3211,2.4453,2.4456,2.3714,2.3142,2.3656,2.3522,2.3754,2.278,2.2801,2.3101,2.2679,2.2698,2.2049,2.1147,2.2755,2.3115,2.3747,2.4342,2.5253,2.5605,2.5282,2.5258,2.441,2.4168,2.5111,2.5791,2.6413,2.6694,2.7433,2.7399,2.8638,2.8412,2.8154,2.9291,2.904,2.968,3.0829,2.9695,2.9065,3.0387,3.0447,3.0384,3.1785,3.2587,3.1011,3.001,3.0952,3.1109,3.1209,3.1178,3.2897,3.3174,3.3676,3.3754,3.2612,3.2871,3.3676,3.467,3.4985,3.5403,3.5144,3.3785,2.8358,3.1738,3.1175,3.3058,3.5383,3.605,3.5614,3.6711,3.9917,4.2535,4.1613,4.3689,4.3972,4.4149,4.6582,4.6738,4.7063,5.0107,5.1138,5.1493,5.0031,5.0825,5.073,4.989,5.1496,5.072,4.9597,4.7816,5.105,5.2524,5.0987,5.3074,5.5068,5.3851,5.3018,5.215,5.2738,5.4448,5.57,5.7081,5.8594,5.7596,5.8355,5.7432,6.003,6.3779,6.3787,6.4437,6.5708,6.673,6.6886,7.0221,7.216,7.322,7.4883,7.1794,7.1441,7.0346,7.072,6.8004,7.1764,7.4061,7.5284,7.722,7.582,7.5339,7.6844,7.994,8.1526,8.1904,8.2544,8.1838,7.4194,7.8602,7.7916,7.8381,7.9846,7.9778,7.5677,7.6293],"Liquid fund":[1.008,1.0152,1.02,1.0259,1.0323,1.0388,1.0455,1.0523,1.0596,1.0668,1.0737,1.0814,1.0886,1.096,1.1039,1.1122,1.1208,1.1293,1.1381,1.1461,1.1539,1.161,1.1673,1.1739,1.1792,1.1843,1.189,1.1938,1.1983,1.2023,1.2066,1.2107,1.2149,1.2186,1.2217,1.2261,1.2304,1.235,1.2399,1.2451,1.2509,1.2565,1.2633,1.27,1.2774,1.2857,1.2935,1.3028,1.3113,1.3209,1.3301,1.3399,1.3495,1.3591,1.3696,1.3796,1.3898,1.4012,1.4114,1.4232,1.4358,1.4474,1.4579,1.4694,1.4804,1.4908,1.5015,1.5118,1.5226,1.5333,1.5429,1.5533,1.5666,1.5777,1.5875,1.5967,1.6102,1.6248,1.6387,1.6508,1.6639,1.6763,1.6873,1.7014,1.7143,1.7267,1.7393,1.7518,1.7644,1.7769,1.79,1.8025,1.8153,1.8278,1.8396,1.8537,1.867,1.8802,1.8928,1.9056,1.9181,1.9303,1.9423,1.9546,1.967,1.9794,1.9913,2.0063,2.0194,2.0331,2.0458,2.0583,2.0704,2.0819,2.0939,2.1055,2.1163,2.1282,2.1387,2.1508,2.1614,2.1738,2.1851,2.197,2.2086,2.2194,2.2314,2.2427,2.2545,2.2666,2.2779,2.2926,2.304,2.3182,2.3317,2.3461,2.3598,2.3731,2.3876,2.4026,2.4175,2.4321,2.4448,2.4605,2.4746,2.49,2.5036,2.5175,2.5299,2.5416,2.5537,2.5646,2.5751,2.5857,2.5961,2.6106,2.6214,2.6321,2.6398,2.6468,2.6539,2.6606,2.6679,2.6748,2.6808,2.687,2.6936,2.7007,2.7074,2.7144,2.7217,2.7293,2.7372,2.7436,2.7506,2.7589,2.767,2.7745,2.7821,2.7909,2.7989,2.8073,2.818,2.8286,2.8415,2.8535,2.8674,2.8827,2.8989,2.9141,2.9281,2.947,2.9636,2.981,2.997,3.014,3.0307,3.0477,3.0647,3.0818,3.1004,3.119,3.1375,3.158,3.1775,3.1963,3.2143,3.2337,3.2523,3.2712,3.2902,3.3085,3.3277,3.3471,3.3651,3.3879,3.4081,3.4268,3.444,3.4606,3.4767,3.493,3.5095,3.5263,3.5439,3.5596,3.5776,3.5953,3.6192,3.6367,3.6599,3.6782,3.6978,3.7153,3.7324],"Nifty 50 index fund":[1.0697,1.1228,1.1302,1.185,1.1687,1.3128,1.5394,1.5013,1.588,1.3257,1.3482,1.2201,1.3293,1.2535,1.0401,1.1153,1.1229,1.0114,0.7442,0.7107,0.7628,0.7412,0.7121,0.7773,0.8923,1.1383,1.0971,1.187,1.1936,1.3002,1.205,1.2847,1.3258,1.2428,1.2523,1.3354,1.3416,1.2927,1.3541,1.3679,1.3785,1.538,1.5346,1.4929,1.5608,1.3988,1.3538,1.4789,1.4571,1.4099,1.437,1.3957,1.2735,1.2574,1.354,1.2272,1.1732,1.3185,1.3637,1.34,1.3263,1.2477,1.3421,1.3312,1.342,1.4542,1.4351,1.5006,1.5054,1.5365,1.4477,1.4445,1.5051,1.5241,1.4892,1.4643,1.3952,1.4607,1.6071,1.5776,1.6087,1.5532,1.5998,1.7066,1.7024,1.8395,1.9401,1.9747,2.0356,2.0384,2.131,2.1979,2.1198,2.2524,2.2611,2.1758,2.0953,2.1578,2.149,2.1949,2.0515,2.0479,2.0799,2.0466,2.0488,1.9512,1.8038,1.9987,2.0277,2.1101,2.1502,2.2448,2.2846,2.2404,2.2483,2.1418,2.1309,2.2279,2.3117,2.3887,2.4209,2.504,2.4879,2.6377,2.6004,2.5684,2.7117,2.684,2.7633,2.8931,2.7565,2.6633,2.8249,2.8293,2.8294,3.0036,3.0926,2.8954,2.754,2.8839,2.8809,2.8734,2.8666,3.0893,3.1218,3.1718,3.1427,2.9712,2.9518,3.072,3.1851,3.2327,3.2625,3.2072,3.0033,2.3045,2.6425,2.5691,2.7634,2.9754,3.0632,3.0257,3.1369,3.495,3.7682,3.6752,3.9215,3.9664,3.9512,4.2145,4.261,4.2784,4.6506,4.7834,4.8028,4.6172,4.7178,4.7141,4.5722,4.7531,4.6553,4.5308,4.3169,4.6995,4.8726,4.689,4.945,5.15,4.9693,4.8472,4.7515,4.7652,4.9595,5.1002,5.2869,5.4477,5.321,5.4254,5.2746,5.5674,6.0072,6.0061,6.0832,6.1758,6.2504,6.2498,6.6689,6.9327,7.025,7.1832,6.7423,6.7235,6.5864,6.5553,6.1751,6.5627,6.7898,6.9188,7.1495,6.9505,6.8649,6.9155,7.2329,7.371,7.3484,7.1232,7.0851,6.2824,6.7508,6.6334,6.7428,6.9004,6.8199,6.4064,6.5299]},"data_as_of":"12 Nov 2026"},"tables":{"items":[{"item":"Q1 Interest","pct_correct":71.17,"pct_correct_weighted":69.303,"pct_dont_know":14.771,"item_rest_r":0.427,"irt_discrimination_a":1.782,"irt_difficulty_b":-0.776},{"item":"Q2 Inflation","pct_correct":57.88,"pct_correct_weighted":55.592,"pct_dont_know":21.708,"item_rest_r":0.489,"irt_discrimination_a":2.163,"irt_difficulty_b":-0.258},{"item":"Q3 Bond price","pct_correct":25.791,"pct_correct_weighted":24.958,"pct_dont_know":40.633,"item_rest_r":0.294,"irt_discrimination_a":0.988,"irt_difficulty_b":1.274},{"item":"Q4 Compounding","pct_correct":29.664,"pct_correct_weighted":29.112,"pct_dont_know":28.26,"item_rest_r":0.28,"irt_discrimination_a":0.831,"irt_difficulty_b":1.188},{"item":"Q5 Probability","pct_correct":36.901,"pct_correct_weighted":35.246,"pct_dont_know":33.796,"item_rest_r":0.305,"irt_discrimination_a":0.897,"irt_difficulty_b":0.698},{"item":"Q6 Loan tenure","pct_correct":71.472,"pct_correct_weighted":68.822,"pct_dont_know":20.041,"item_rest_r":0.412,"irt_discrimination_a":1.654,"irt_difficulty_b":-0.817},{"item":"Q7 Diversification","pct_correct":43.172,"pct_correct_weighted":41.417,"pct_dont_know":45.633,"item_rest_r":0.451,"irt_discrimination_a":1.671,"irt_difficulty_b":0.241}],"tiers":[{"sample":"All","n":52657,"mean_score":3.36,"Low_pct":33.92,"Low_pct_weighted":36.31,"Medium_pct":36.32,"Medium_pct_weighted":36.09,"High_pct":29.77,"High_pct_weighted":27.6},{"sample":"2021","n":27118,"mean_score":3.34,"Low_pct":34.7,"Low_pct_weighted":37.0,"Medium_pct":35.37,"Medium_pct_weighted":35.11,"High_pct":29.93,"High_pct_weighted":27.88},{"sample":"2024","n":25539,"mean_score":3.38,"Low_pct":33.08,"Low_pct_weighted":35.57,"Medium_pct":37.33,"Medium_pct_weighted":37.13,"High_pct":29.59,"High_pct_weighted":27.31}],"known":[{"external criterion":"Bachelor's degree or higher (%)","Low":21.496,"Medium":33.727,"High":57.605,"spearman_rho_with_score":0.315,"p_value":0.0},{"external criterion":"Household income >= $75k (%)","Low":21.838,"Medium":33.895,"High":53.522,"spearman_rho_with_score":0.277,"p_value":0.0},{"external criterion":"Holds non-retirement investments (%, of those asked)","Low":21.27,"Medium":34.409,"High":56.417,"spearman_rho_with_score":0.311,"p_value":0.0},{"external criterion":"Has emergency fund (%)","Low":36.267,"Medium":48.844,"High":68.266,"spearman_rho_with_score":0.271,"p_value":0.0},{"external criterion":"Has calculated retirement needs (%, non-retired)","Low":26.599,"Medium":40.258,"High":59.138,"spearman_rho_with_score":0.28,"p_value":0.0},{"external criterion":"Took part in financial education (%)","Low":14.754,"Medium":19.912,"High":27.549,"spearman_rho_with_score":0.137,"p_value":0.0},{"external criterion":"Self-rated knowledge (1-7, mean)","Low":4.638,"Medium":4.983,"High":5.406,"spearman_rho_with_score":0.236,"p_value":0.0}],"digital":[{"lit_tier":"Low","Low (0-1 channels)":13.61,"Medium (2)":9.96,"High (3-4)":12.74},{"lit_tier":"Medium","Low (0-1 channels)":13.92,"Medium (2)":10.4,"High (3-4)":11.77},{"lit_tier":"High","Low (0-1 channels)":11.98,"Medium (2)":8.52,"High (3-4)":7.1}],"screeners":[{"screener":"Self-rated knowledge only","questions_asked":0.0,"accuracy":41.889,"quadratic_weighted_kappa":0.245,"macro_f1":41.527,"severe_error_pct":10.376},{"screener":"Profile-only model (no quiz)","questions_asked":0.0,"accuracy":50.652,"quadratic_weighted_kappa":0.435,"macro_f1":50.888,"severe_error_pct":8.074},{"screener":"Fixed 'Big Three' (interest, inflation, diversification)","questions_asked":3.0,"accuracy":75.97,"quadratic_weighted_kappa":0.813,"macro_f1":75.885,"severe_error_pct":0.239},{"screener":"Best fixed 3 items: Interest, Inflation, Diversification","questions_asked":3.0,"accuracy":75.97,"quadratic_weighted_kappa":0.813,"macro_f1":75.885,"severe_error_pct":0.239},{"screener":"Best fixed 4 items: Interest, Inflation, Probability, Diversification","questions_asked":4.0,"accuracy":79.204,"quadratic_weighted_kappa":0.836,"macro_f1":79.471,"severe_error_pct":0.0},{"screener":"Adaptive optimal tree (at most 3 questions)","questions_asked":3.0,"accuracy":77.693,"quadratic_weighted_kappa":0.808,"macro_f1":78.302,"severe_error_pct":0.18},{"screener":"Adaptive optimal tree (at most 4 questions)","questions_asked":3.838,"accuracy":84.291,"quadratic_weighted_kappa":0.873,"macro_f1":84.678,"severe_error_pct":0.0},{"screener":"Full 7-item quiz (reference)","questions_asked":7.0,"accuracy":100.0,"quadratic_weighted_kappa":1.0,"macro_f1":100.0,"severe_error_pct":0.0}],"readability":[{"register":"Plain","words_mean":170.93,"words_std":12.18,"words_per_sentence_mean":10.11,"words_per_sentence_std":0.22,"flesch_reading_ease_mean":97.32,"flesch_reading_ease_std":0.78,"fk_grade_mean":2.2,"fk_grade_std":0.1,"gunning_fog_mean":5.38,"gunning_fog_std":0.16,"jargon_per_100w_mean":0.0,"jargon_per_100w_std":0.0,"numbers_per_100w_mean":5.55,"numbers_per_100w_std":0.26,"parity_pass_pct":100.0,"pct_fk_grade_le_6":100.0,"pct_fk_grade_le_10":100.0},{"register":"Guided","words_mean":167.68,"words_std":10.64,"words_per_sentence_mean":19.82,"words_per_sentence_std":0.68,"flesch_reading_ease_mean":72.57,"flesch_reading_ease_std":1.42,"fk_grade_mean":8.06,"fk_grade_std":0.27,"gunning_fog_mean":10.72,"gunning_fog_std":0.35,"jargon_per_100w_mean":3.97,"jargon_per_100w_std":0.37,"numbers_per_100w_mean":9.24,"numbers_per_100w_std":0.38,"parity_pass_pct":100.0,"pct_fk_grade_le_6":0.0,"pct_fk_grade_le_10":100.0},{"register":"Expert","words_mean":131.76,"words_std":8.5,"words_per_sentence_mean":24.11,"words_per_sentence_std":0.93,"flesch_reading_ease_mean":25.04,"flesch_reading_ease_std":2.24,"fk_grade_mean":15.76,"fk_grade_std":0.52,"gunning_fog_mean":19.75,"gunning_fog_std":0.64,"jargon_per_100w_mean":28.51,"jargon_per_100w_std":0.81,"numbers_per_100w_mean":14.81,"numbers_per_100w_std":0.6,"parity_pass_pct":100.0,"pct_fk_grade_le_6":0.0,"pct_fk_grade_le_10":0.0}],"load":[{"tier":"Low","adaptive_fk_grade":2.18,"one_size_expert_fk_grade":15.65,"adaptive_jargon_per_100w":0.0,"one_size_expert_jargon_per_100w":28.36},{"tier":"Medium","adaptive_fk_grade":8.06,"one_size_expert_fk_grade":15.74,"adaptive_jargon_per_100w":3.98,"one_size_expert_jargon_per_100w":28.45},{"tier":"High","adaptive_fk_grade":15.88,"one_size_expert_fk_grade":15.88,"adaptive_jargon_per_100w":28.72,"one_size_expert_jargon_per_100w":28.72}],"contrast":[{"ui_element":"Body text on page","foreground":"#1B1F24","background":"#FFFFFF","contrast_ratio":16.56,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"},{"ui_element":"Secondary text on page","foreground":"#4A5562","background":"#FFFFFF","contrast_ratio":7.59,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"},{"ui_element":"Primary button label","foreground":"#FFFFFF","background":"#0A4C92","contrast_ratio":8.53,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"},{"ui_element":"Link / accent on page","foreground":"#0A4C92","background":"#FFFFFF","contrast_ratio":8.53,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"},{"ui_element":"Warning text on tint","foreground":"#7A3E00","background":"#FFF4E0","contrast_ratio":7.66,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"},{"ui_element":"Success text on tint","foreground":"#0E5A2F","background":"#E6F4EA","contrast_ratio":7.33,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"},{"ui_element":"Body text on card","foreground":"#1B1F24","background":"#F3F5F8","contrast_ratio":15.16,"wcag_AA_normal_text_4.5":"pass","wcag_AAA_normal_text_7.0":"pass"}],"ldp":[{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":0.5,"category_flip_pct":66.365,"severe_flip_pct":22.792,"mean_abs_equity_shift_pp":22.289},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":1.0,"category_flip_pct":65.873,"severe_flip_pct":22.637,"mean_abs_equity_shift_pp":22.128},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":2.0,"category_flip_pct":65.384,"severe_flip_pct":22.37,"mean_abs_equity_shift_pp":21.938},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":4.0,"category_flip_pct":63.863,"severe_flip_pct":21.598,"mean_abs_equity_shift_pp":21.365},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":8.0,"category_flip_pct":59.977,"severe_flip_pct":19.731,"mean_abs_equity_shift_pp":19.927},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":16.0,"category_flip_pct":49.708,"severe_flip_pct":15.352,"mean_abs_equity_shift_pp":16.265},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":32.0,"category_flip_pct":22.047,"severe_flip_pct":5.931,"mean_abs_equity_shift_pp":6.995},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":64.0,"category_flip_pct":1.29,"severe_flip_pct":0.329,"mean_abs_equity_shift_pp":0.405},{"mechanism":"Input-level: k-ary randomised response on 10 inputs","eps_total":128.0,"category_flip_pct":0.001,"severe_flip_pct":0.0,"mean_abs_equity_shift_pp":0.0},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":0.5,"category_flip_pct":66.1,"severe_flip_pct":22.561,"mean_abs_equity_shift_pp":22.165},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":1.0,"category_flip_pct":65.848,"severe_flip_pct":22.308,"mean_abs_equity_shift_pp":22.039},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":2.0,"category_flip_pct":64.931,"severe_flip_pct":21.649,"mean_abs_equity_shift_pp":21.645},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":4.0,"category_flip_pct":63.195,"severe_flip_pct":20.174,"mean_abs_equity_shift_pp":20.842},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":8.0,"category_flip_pct":59.88,"severe_flip_pct":17.723,"mean_abs_equity_shift_pp":19.401},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":16.0,"category_flip_pct":53.245,"severe_flip_pct":13.289,"mean_abs_equity_shift_pp":16.633},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":32.0,"category_flip_pct":41.061,"severe_flip_pct":7.244,"mean_abs_equity_shift_pp":12.076},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":64.0,"category_flip_pct":25.295,"severe_flip_pct":2.025,"mean_abs_equity_shift_pp":6.83},{"mechanism":"Input-level: ordinal exponential mechanism on 10 inputs","eps_total":128.0,"category_flip_pct":11.144,"severe_flip_pct":0.202,"mean_abs_equity_shift_pp":2.837},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":0.5,"category_flip_pct":54.737,"severe_flip_pct":18.933,"mean_abs_equity_shift_pp":18.417},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":1.0,"category_flip_pct":42.411,"severe_flip_pct":14.607,"mean_abs_equity_shift_pp":14.255},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":2.0,"category_flip_pct":21.354,"severe_flip_pct":7.34,"mean_abs_equity_shift_pp":7.174},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":4.0,"category_flip_pct":3.503,"severe_flip_pct":1.189,"mean_abs_equity_shift_pp":1.173},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":8.0,"category_flip_pct":0.073,"severe_flip_pct":0.028,"mean_abs_equity_shift_pp":0.025},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":16.0,"category_flip_pct":0.0,"severe_flip_pct":0.0,"mean_abs_equity_shift_pp":0.0},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":32.0,"category_flip_pct":0.0,"severe_flip_pct":0.0,"mean_abs_equity_shift_pp":0.0},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":64.0,"category_flip_pct":0.0,"severe_flip_pct":0.0,"mean_abs_equity_shift_pp":0.0},{"mechanism":"Output-level: on-device profiling, randomised response on the result","eps_total":128.0,"category_flip_pct":0.0,"severe_flip_pct":0.0,"mean_abs_equity_shift_pp":0.0}],"ldp_agg":[{"eps_total":0.5,"input_level_eps_per_attribute":0.05,"input_level_emergency_fund_share_mae_pp":7.296,"input_level_p95_error_pp":17.953,"output_level_aggressive_share_mae_pp":0.974,"output_level_p95_error_pp":2.17},{"eps_total":1.0,"input_level_eps_per_attribute":0.1,"input_level_emergency_fund_share_mae_pp":3.569,"input_level_p95_error_pp":8.939,"output_level_aggressive_share_mae_pp":0.443,"output_level_p95_error_pp":1.101},{"eps_total":2.0,"input_level_eps_per_attribute":0.2,"input_level_emergency_fund_share_mae_pp":1.815,"input_level_p95_error_pp":4.688,"output_level_aggressive_share_mae_pp":0.174,"output_level_p95_error_pp":0.404},{"eps_total":4.0,"input_level_eps_per_attribute":0.4,"input_level_emergency_fund_share_mae_pp":0.921,"input_level_p95_error_pp":2.426,"output_level_aggressive_share_mae_pp":0.057,"output_level_p95_error_pp":0.137},{"eps_total":8.0,"input_level_eps_per_attribute":0.8,"input_level_emergency_fund_share_mae_pp":0.458,"input_level_p95_error_pp":1.032,"output_level_aggressive_share_mae_pp":0.007,"output_level_p95_error_pp":0.017},{"eps_total":16.0,"input_level_eps_per_attribute":1.6,"input_level_emergency_fund_share_mae_pp":0.207,"input_level_p95_error_pp":0.493,"output_level_aggressive_share_mae_pp":0.0,"output_level_p95_error_pp":0.0},{"eps_total":32.0,"input_level_eps_per_attribute":3.2,"input_level_emergency_fund_share_mae_pp":0.073,"input_level_p95_error_pp":0.175,"output_level_aggressive_share_mae_pp":0.0,"output_level_p95_error_pp":0.0},{"eps_total":64.0,"input_level_eps_per_attribute":6.4,"input_level_emergency_fund_share_mae_pp":0.014,"input_level_p95_error_pp":0.031,"output_level_aggressive_share_mae_pp":0.0,"output_level_p95_error_pp":0.0},{"eps_total":128.0,"input_level_eps_per_attribute":12.8,"input_level_emergency_fund_share_mae_pp":0.0,"input_level_p95_error_pp":0.002,"output_level_aggressive_share_mae_pp":0.0,"output_level_p95_error_pp":0.0}],"perf":[{"strategy":"PFW Conservative","cagr_pct":9.61,"volatility_pct":5.87,"sharpe_vs_liquid":0.45,"max_drawdown_pct":-8.99,"worst_calendar_year_pct":0.6,"final_value_of_1_rupee":6.03},{"strategy":"PFW Conservative + trend overlay","cagr_pct":9.49,"volatility_pct":5.14,"sharpe_vs_liquid":0.48,"max_drawdown_pct":-6.98,"worst_calendar_year_pct":2.37,"final_value_of_1_rupee":5.9},{"strategy":"PFW Moderate","cagr_pct":10.5,"volatility_pct":10.41,"sharpe_vs_liquid":0.37,"max_drawdown_pct":-25.85,"worst_calendar_year_pct":-18.74,"final_value_of_1_rupee":7.07},{"strategy":"PFW Moderate + trend overlay","cagr_pct":10.37,"volatility_pct":9.51,"sharpe_vs_liquid":0.38,"max_drawdown_pct":-21.98,"worst_calendar_year_pct":-14.87,"final_value_of_1_rupee":6.91},{"strategy":"PFW Aggressive","cagr_pct":10.93,"volatility_pct":15.18,"sharpe_vs_liquid":0.32,"max_drawdown_pct":-41.01,"worst_calendar_year_pct":-36.58,"final_value_of_1_rupee":7.63},{"strategy":"PFW Aggressive + trend overlay","cagr_pct":10.9,"volatility_pct":14.23,"sharpe_vs_liquid":0.33,"max_drawdown_pct":-37.09,"worst_calendar_year_pct":-32.95,"final_value_of_1_rupee":7.58},{"strategy":"Liquid fund only (FD-like)","cagr_pct":6.96,"volatility_pct":0.53,"sharpe_vs_liquid":null,"max_drawdown_pct":0.0,"worst_calendar_year_pct":3.21,"final_value_of_1_rupee":3.73},{"strategy":"Nifty 50 index only","cagr_pct":10.06,"volatility_pct":20.35,"sharpe_vs_liquid":0.24,"max_drawdown_pct":-55.25,"worst_calendar_year_pct":-51.96,"final_value_of_1_rupee":6.53},{"strategy":"60/40 equity/gilt","cagr_pct":10.15,"volatility_pct":12.74,"sharpe_vs_liquid":0.3,"max_drawdown_pct":-30.44,"worst_calendar_year_pct":-22.17,"final_value_of_1_rupee":6.64},{"strategy":"'100 minus age' at 30 (70/30)","cagr_pct":10.24,"volatility_pct":14.54,"sharpe_vs_liquid":0.28,"max_drawdown_pct":-37.05,"worst_calendar_year_pct":-30.17,"final_value_of_1_rupee":6.74}],"sip":[{"strategy":"PFW Conservative","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.54,"xirr_median_pct":9.19,"xirr_p95_pct":10.11,"xirr_min_pct":7.69,"pct_windows_beating_liquid":100.0},{"strategy":"PFW Conservative + trend overlay","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.24,"xirr_median_pct":9.06,"xirr_p95_pct":9.81,"xirr_min_pct":7.59,"pct_windows_beating_liquid":100.0},{"strategy":"PFW Moderate","sip_horizon_years":10,"windows":116,"xirr_p05_pct":9.16,"xirr_median_pct":10.71,"xirr_p95_pct":12.18,"xirr_min_pct":6.84,"pct_windows_beating_liquid":99.14},{"strategy":"PFW Moderate + trend overlay","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.81,"xirr_median_pct":10.47,"xirr_p95_pct":11.94,"xirr_min_pct":6.69,"pct_windows_beating_liquid":99.14},{"strategy":"PFW Aggressive","sip_horizon_years":10,"windows":116,"xirr_p05_pct":9.24,"xirr_median_pct":12.01,"xirr_p95_pct":14.01,"xirr_min_pct":5.71,"pct_windows_beating_liquid":98.28},{"strategy":"PFW Aggressive + trend overlay","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.85,"xirr_median_pct":11.7,"xirr_p95_pct":13.75,"xirr_min_pct":5.56,"pct_windows_beating_liquid":97.41},{"strategy":"Liquid fund only (FD-like)","sip_horizon_years":10,"windows":116,"xirr_p05_pct":5.71,"xirr_median_pct":6.13,"xirr_p95_pct":8.04,"xirr_min_pct":5.69,"pct_windows_beating_liquid":0.0},{"strategy":"Nifty 50 index only","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.84,"xirr_median_pct":12.64,"xirr_p95_pct":15.23,"xirr_min_pct":4.04,"pct_windows_beating_liquid":96.55},{"strategy":"60/40 equity/gilt","sip_horizon_years":10,"windows":116,"xirr_p05_pct":8.97,"xirr_median_pct":11.05,"xirr_p95_pct":12.71,"xirr_min_pct":6.53,"pct_windows_beating_liquid":99.14},{"strategy":"'100 minus age' at 30 (70/30)","sip_horizon_years":10,"windows":116,"xirr_p05_pct":9.05,"xirr_median_pct":11.47,"xirr_p95_pct":13.45,"xirr_min_pct":5.98,"pct_windows_beating_liquid":98.28}],"goal":[{"portfolio":"Conservative","return_assumption":"PFW planning rate","assumed_return_pct":7.0,"pct_windows_goal_met":100.0,"median_final_as_pct_of_goal":110.9,"worst_final_as_pct_of_goal":102.5},{"portfolio":"Conservative","return_assumption":"Flat 10% (RO3 example)","assumed_return_pct":10.0,"pct_windows_goal_met":0.9,"median_final_as_pct_of_goal":93.4,"worst_final_as_pct_of_goal":86.4},{"portfolio":"Conservative","return_assumption":"Flat 12% (common calculator default)","assumed_return_pct":12.0,"pct_windows_goal_met":0.0,"median_final_as_pct_of_goal":83.1,"worst_final_as_pct_of_goal":76.8},{"portfolio":"Moderate","return_assumption":"PFW planning rate","assumed_return_pct":8.0,"pct_windows_goal_met":97.4,"median_final_as_pct_of_goal":113.6,"worst_final_as_pct_of_goal":92.6},{"portfolio":"Moderate","return_assumption":"Flat 10% (RO3 example)","assumed_return_pct":10.0,"pct_windows_goal_met":56.9,"median_final_as_pct_of_goal":101.3,"worst_final_as_pct_of_goal":82.6},{"portfolio":"Moderate","return_assumption":"Flat 12% (common calculator default)","assumed_return_pct":12.0,"pct_windows_goal_met":0.0,"median_final_as_pct_of_goal":90.0,"worst_final_as_pct_of_goal":73.4},{"portfolio":"Aggressive","return_assumption":"PFW planning rate","assumed_return_pct":9.0,"pct_windows_goal_met":92.2,"median_final_as_pct_of_goal":115.0,"worst_final_as_pct_of_goal":82.5},{"portfolio":"Aggressive","return_assumption":"Flat 10% (RO3 example)","assumed_return_pct":10.0,"pct_windows_goal_met":73.3,"median_final_as_pct_of_goal":108.5,"worst_final_as_pct_of_goal":77.9},{"portfolio":"Aggressive","return_assumption":"Flat 12% (common calculator default)","assumed_return_pct":12.0,"pct_windows_goal_met":33.6,"median_final_as_pct_of_goal":96.5,"worst_final_as_pct_of_goal":69.2}],"regime":[{"model":"Random forest","A_label_from_trailing_return_random_split_pct":99.6,"B_forward_label_random_split_pct":64.8,"C_forward_label_purged_walk_forward_pct":47.2,"majority_class_baseline_walk_forward_pct":37.5},{"model":"Gradient boosting","A_label_from_trailing_return_random_split_pct":99.6,"B_forward_label_random_split_pct":55.3,"C_forward_label_purged_walk_forward_pct":41.7,"majority_class_baseline_walk_forward_pct":37.5}],"power":[{"n_per_tier":20,"total_n":60,"power_tier_x_interface_interaction":0.361,"power_adaptive_gain_in_low_tier":0.725},{"n_per_tier":30,"total_n":90,"power_tier_x_interface_interaction":0.52,"power_adaptive_gain_in_low_tier":0.887},{"n_per_tier":40,"total_n":120,"power_tier_x_interface_interaction":0.661,"power_adaptive_gain_in_low_tier":0.958},{"n_per_tier":50,"total_n":150,"power_tier_x_interface_interaction":0.752,"power_adaptive_gain_in_low_tier":0.985},{"n_per_tier":60,"total_n":180,"power_tier_x_interface_interaction":0.847,"power_adaptive_gain_in_low_tier":0.996},{"n_per_tier":80,"total_n":240,"power_tier_x_interface_interaction":0.925,"power_adaptive_gain_in_low_tier":1.0}],"ro1check":[{"data":"NFCS 2021, RO1's 13 features","n":22755,"logistic_accuracy_predicting_own_kmeans_labels_pct":99.877,"silhouette_k2":0.248,"bootstrap_stability_ari":0.993},{"data":"Pure Gaussian noise, same shape","n":22755,"logistic_accuracy_predicting_own_kmeans_labels_pct":99.855,"silhouette_k2":0.05,"bootstrap_stability_ari":0.027}]}};
+</script>
+<script>/* PFW engine: a line-for-line JavaScript port of pfw_core.py and the scoring in
+   pfw_instruments.py. No DOM access. Parity with Python is checked by web/test_parity.py. */
+function createEngine(DATA) {
+  const K = DATA.core, INS = DATA.instruments;
+  const RUPEE = "₹";
+
+  // ---- numeric helpers that match Python --------------------------------
+  function pyRound(x, nd) {                       // round half to even, like Python 3
+    const m = Math.pow(10, nd || 0), y = x * m, f = Math.floor(y), d = y - f;
+    let r;
+    if (Math.abs(d - 0.5) < 1e-12) r = (f % 2 === 0) ? f : f + 1;
+    else r = Math.round(y);
+    return r / m;
+  }
+  function fx(x, nd) {                            // Python's f"{x:.ndf}": exact ties go to the even digit
+    const long = Math.abs(x).toFixed(Math.min(100, nd + 30)), cut = long.length - 30;
+    if (/^50*$/.test(long.slice(cut))) {
+      const digits = long.slice(0, cut).replace(".", "");
+      if (Number(digits[digits.length - 1]) % 2 === 0) {
+        const kept = long.slice(0, cut).replace(/\.$/, "");
+        return (x < 0 && Number(kept) !== 0 ? "-" : "") + kept;
+      }
+    }
+    return x.toFixed(nd);
+  }
+  function inr(x) {
+    x = pyRound(x);
+    let s = String(Math.abs(x));
+    if (s.length > 3) {
+      const head = s.slice(0, -3).replace(/(\d)(?=(\d\d)+$)/g, "$1,");
+      s = head + "," + s.slice(-3);
+    }
+    return (x < 0 ? "-" : "") + RUPEE + s;
+  }
+  function inrWords(x) {
+    if (x >= 1e7) return RUPEE + fx(x / 1e7, 1) + " crore";
+    if (x >= 1e5) return RUPEE + fx(x / 1e5, 1) + " lakh";
+    if (x >= 1e3) return RUPEE + fx(pyRound(x / 1e3), 0) + " thousand";
+    return RUPEE + fx(pyRound(x / 100) * 100, 0);
+  }
+
+  // ---- literacy ----------------------------------------------------------
+  function tierFromScore(s) { return s <= K.TIER_CUTS[0] ? "Low" : (s <= K.TIER_CUTS[1] ? "Medium" : "High"); }
+
+  // ---- suitability profile, allocation, SIP ------------------------------
+  const MAPS = {
+    saving: { 1: 1.0, 3: 0.4, 2: 0.0 }, stability: { 2: 1.0, 1: 0.4 }, cashflow: { 3: 1.0, 2: 0.5, 1: 0.0 },
+    dependents: { 1: 0.8, 2: 0.6, 3: 0.45, 4: 0.3, 5: 1.0, 6: 1.0 }
+  };
+  function profile(c, goalYears) {
+    const age = K.AGE_MID[c.age_group];
+    let horizon = age < 55 ? K.RETIREMENT_AGE - age : 5;
+    if (goalYears != null) horizon = Number(goalYears);
+    const comp = {
+      horizon: Math.min(1, Math.max(0, horizon / 20)),
+      emergency: c.emergency === 1 ? 1 : 0,
+      saving: MAPS.saving[c.spend],
+      debt: 1 - (c.debt_stress - 1) / 6,
+      stability: MAPS.stability[c.income_drop],
+      cashflow: MAPS.cashflow[c.difficulty],
+      dependents: MAPS.dependents[c.dependents]
+    };
+    const T = (c.risk_w - 1) / 9;
+    let C = 0;
+    for (const k of Object.keys(K.CAPACITY_WEIGHTS)) C += comp[k] * K.CAPACITY_WEIGHTS[k];
+    const S = 0.6 * Math.min(T, C) + 0.4 * (T + C) / 2;
+    let cat = S < K.RISK_CUTS[0] ? "Conservative" : (S < K.RISK_CUTS[1] ? "Moderate" : "Aggressive");
+    if (horizon <= 3) cat = "Conservative";
+    else if (horizon < 5 && cat === "Aggressive") cat = "Moderate";
+    return { tolerance: T, capacity: C, score: S, risk_cat: cat, horizon_years: horizon, binding: T <= C ? "tolerance" : "capacity", comp };
+  }
+  function sipRequired(fv, annualReturn, years, stepUp) {
+    stepUp = stepUp || 0;
+    const i = annualReturn / 12, Y = Math.max(1, pyRound(years));
+    const a12 = Math.abs(i) < 1e-12 ? 12 : (Math.pow(1 + i, 12) - 1) / i * (1 + i);
+    let factor = 0;
+    for (let y = 0; y < Y; y++) factor += Math.pow(1 + stepUp, y) * a12 * Math.pow(1 + i, 12 * (Y - 1 - y));
+    return fv / factor;
+  }
+  function plan(c, goalAmountToday, goalYears, incomeOverride) {
+    const p = profile(c, goalYears), cat = p.risk_cat;
+    const income = incomeOverride ? Number(incomeOverride) : K.INR_INCOME[c.income_b];
+    const saveRate = { 1: 0.20, 3: 0.05, 2: 0.0 }[c.spend];
+    const expenses = income * (1 - saveRate), surplus = income - expenses;
+    const efTarget = 6 * expenses, efGap = c.emergency === 1 ? 0 : efTarget;
+    const years = p.horizon_years;
+    let corpusToday;
+    if (goalAmountToday != null) corpusToday = Number(goalAmountToday);
+    else if (K.AGE_MID[c.age_group] < 55) corpusToday = 25 * 12 * expenses;
+    else corpusToday = 3 * 12 * expenses;
+    const corpusFuture = corpusToday * Math.pow(1 + K.INFLATION, years);
+    const r = K.ASSUMED_RETURN[cat];
+    const sip = sipRequired(corpusFuture, r, years, K.STEP_UP);
+    const affordable = surplus > 0 && sip <= surplus;
+    const sipStart = affordable ? sip : Math.max(500, pyRound(0.8 * surplus / 100) * 100);
+    const contrib = [];
+    for (const k of Object.keys(K.CAPACITY_WEIGHTS)) contrib.push([k, K.CAPACITY_WEIGHTS[k] * (p.comp[k] - 0.5)]);
+    contrib.push(["tolerance", 0.30 * (p.tolerance - 0.5)]);
+    const up = contrib.slice().sort((a, b) => b[1] - a[1]).filter(e => e[1] > 0.01).slice(0, 2).map(e => e[0]);
+    const down = contrib.slice().sort((a, b) => a[1] - b[1]).filter(e => e[1] < -0.01).slice(0, 2).map(e => e[0]);
+    return {
+      risk_cat: cat, score: p.score, tolerance: p.tolerance, capacity: p.capacity, binding: p.binding,
+      allocation: Object.assign({}, K.MODEL_PORTFOLIOS[cat]), horizon_years: years, income, expenses, surplus,
+      ef_target: efTarget, ef_gap: efGap, corpus_today: corpusToday, corpus_future: corpusFuture, assumed_return: r,
+      sip, sip_affordable: affordable, sip_start: sipStart, drivers_up: up, drivers_down: down
+    };
+  }
+
+  // ---- explanation engine ------------------------------------------------
+  function explain(pl, register, evidence) {
+    const ev = (evidence || DATA.evidence.evidence)[pl.risk_cat], a = pl.allocation, safe = a.Gilt + a.Liquid;
+    const up = pl.drivers_up, down = pl.drivers_down, yrs = pyRound(pl.horizon_years);
+    const pct0 = x => fx(x * 100, 0);
+    let s = [];
+    if (register === "Plain") {
+      s = ["We suggest " + K.CAT_PLAIN[pl.risk_cat] + " for you.",
+        "Out of every " + RUPEE + "100 you put in, " + RUPEE + a.Equity + " goes to shares of big Indian companies.",
+        RUPEE + a.Gold + " goes to gold.", "The other " + RUPEE + safe + " goes to safer choices that move less.", "Why this mix?"];
+      up.slice(0, 1).forEach(k => s.push(K.PLAIN_UP[k]));
+      down.slice(0, 2).forEach(k => s.push(K.PLAIN_DOWN[k]));
+      if (down.length) s.push("So we took a little less risk than we could have.");
+      if (pl.ef_gap > 0) s.push("First, try to keep about " + inrWords(pl.ef_gap) + " aside for a rainy day.");
+      if (pl.sip_affordable) s.push("Then put in about " + inrWords(pl.sip) + " each month. Raise it a little every year, for " + yrs + " years.");
+      else {
+        s.push("To reach your goal in " + yrs + " years you would need to start with about " + inrWords(pl.sip) + " each month.");
+        s.push("That is more than you can spare now. Start with " + inrWords(pl.sip_start) + " each month and add more each year.");
+      }
+      s.push("Shares can fall in some years. In its worst spell, a plan like this fell about " + Math.abs(pyRound(ev.max_dd)) + " out of every 100 rupees.");
+      const beat = ev.pct_beat_liquid == null ? 100 : ev.pct_beat_liquid;
+      if (beat >= 99.5) s.push("Over ten years it did better than a savings-type fund in every past case we checked.");
+      else if (beat >= 95) s.push("Over ten years it did better than a savings-type fund in almost every past case we checked.");
+      else s.push("Over ten years it did better than a savings-type fund in about " + pyRound(beat / 10) + " out of 10 past cases.");
+      s.push("The past is not a promise.");
+      return s.join(" ");
+    }
+    if (register === "Guided") {
+      s = ["Your risk profile is " + pl.risk_cat + ".",
+        "We suggest putting " + a.Equity + "% in a Nifty 50 index fund (shares of India's 50 largest companies), " + a.Gold +
+        "% in gold, " + a.Gilt + "% in a government bond fund and " + a.Liquid + "% in a liquid fund (similar to a savings account)."];
+      const why = up.slice(0, 2).map(k => K.GUIDED[k][0]).concat(down.slice(0, 2).map(k => K.GUIDED[k][1]));
+      if (why.length) s.push("This mix reflects " + why.join("; ") + ".");
+      if (pl.ef_gap > 0) s.push("Before investing, build an emergency fund of about " + inr(pl.ef_gap) + ", which is six months of expenses.");
+      s.push("To reach your goal in " + yrs + " years you would need a monthly SIP (a regular monthly investment) of about " + inr(pl.sip) +
+        " in the first year, raised by " + pct0(K.STEP_UP) + "% each year. This assumes " + pct0(pl.assumed_return) + "% yearly growth and " +
+        pct0(K.INFLATION) + "% inflation.");
+      if (!pl.sip_affordable) s.push("This is above your current monthly surplus, so start with " + inr(pl.sip_start) + " and raise it faster as your income grows.");
+      s.push("In past ten-year periods this mix returned about " + fx(ev.xirr_p50, 1) + "% a year in the middle case and " +
+        fx(ev.xirr_p05, 1) + "% in a poor case. Its largest fall from a peak was " + fx(Math.abs(ev.max_dd), 0) + "%.");
+      return s.join(" ");
+    }
+    s = ["Suitability score " + fx(pl.score, 2) + " (tolerance " + fx(pl.tolerance, 2) + ", capacity " + fx(pl.capacity, 2) +
+      "; binding constraint: " + pl.binding + ") maps to the " + pl.risk_cat + " model portfolio.",
+      "Strategic allocation: " + a.Equity + "% Nifty 50 index equity, " + a.Gold + "% gold ETF, " + a.Gilt + "% gilt, " + a.Liquid +
+      "% liquid; annual rebalancing to target weights."];
+    if (up.length || down.length) {
+      const parts = [];
+      if (up.length) parts.push("positive contributors: " + up.map(k => K.EXPERT[k]).join(", "));
+      if (down.length) parts.push("negative contributors: " + down.map(k => K.EXPERT[k]).join(", "));
+      s.push("Attribution relative to a neutral profile: " + parts.join("; ") + ".");
+    }
+    if (pl.ef_gap > 0) s.push("Liquidity shortfall of " + inr(pl.ef_gap) + " (six months of expenditure) should be funded before risk assets.");
+    s.push("Required annuity-due SIP of " + inr(pl.sip) + " in year one, stepped up " + pct0(K.STEP_UP) + "% a year, targets an " +
+      "inflation-adjusted corpus of " + inr(pl.corpus_future) + " in " + yrs + " years at an assumed nominal return of " +
+      pct0(pl.assumed_return) + "% and " + pct0(K.INFLATION) + "% inflation" +
+      (pl.sip_affordable ? "." : "; this exceeds the estimated investible surplus, implying a lower starting amount of " + inr(pl.sip_start) + " or a longer horizon."));
+    s.push("Historical rolling ten-year SIP XIRR for this allocation: median " + fx(ev.xirr_p50, 1) + "%, fifth percentile " +
+      fx(ev.xirr_p05, 1) + "%; maximum drawdown " + fx(ev.max_dd, 0) + "%; worst calendar year " + fx(ev.worst_year, 0) + "%.");
+    return s.join(" ");
+  }
+
+  // ---- instruments -------------------------------------------------------
+  function vignettePlan(key) {
+    const v = INS.VIGNETTES[key];
+    return plan(v.codes, v.goal_amount_today, v.goal_years);
+  }
+  function comprehensionQuiz(pl, name, evidence) {
+    const E = evidence || DATA.evidence.evidence, a = pl.allocation, q = [];
+    let opts = [RUPEE + "25", RUPEE + "50", RUPEE + "75", "Not sure"];
+    q.push({ id: "c1", text: "Out of every " + RUPEE + "100 invested for " + name + ", how much goes into company shares (equity)?", options: opts, correct: opts.indexOf(RUPEE + a.Equity) });
+    q.push({ id: "c2", text: "According to the plan, what should " + name + " do first?",
+      options: ["Build up emergency savings", "Start the monthly investment straight away", "Take a loan to invest more", "Not sure"], correct: pl.ef_gap > 0 ? 0 : 1 });
+    const sip = pl.sip, amounts = [sip * 0.4, sip, sip * 2.5].sort((x, y) => x - y);
+    q.push({ id: "c3", text: "About how much would " + name + " need to invest each month in the first year to reach the goal on time?",
+      options: amounts.map(x => inr(pyRound(x / 100) * 100)).concat(["Not sure"]), correct: amounts.indexOf(sip) });
+    q.push({ id: "c4", text: "In its worst past period, roughly how far did a plan like this fall from its peak?",
+      options: K.RISK_CATS.map(c => "About " + Math.abs(pyRound(E[c].max_dd)) + "%").concat(["Not sure"]), correct: K.RISK_CATS.indexOf(pl.risk_cat) });
+    q.push({ id: "c5", text: "Are the returns of this plan guaranteed?",
+      options: ["Yes, the returns shown are guaranteed", "No, the plan can lose value in some years", "Not sure"], correct: 1 });
+    const used = pl.drivers_down.slice(0, 1).length ? pl.drivers_down.slice(0, 1) : pl.drivers_up.slice(0, 1);
+    const key = used.length ? used[0] : "tolerance";
+    const stated = new Set(pl.drivers_up.concat(pl.drivers_down));
+    const distract = Object.keys(INS.DRIVER_LABEL).filter(k => !stated.has(k)).slice(0, 2);
+    opts = [INS.DRIVER_LABEL[key]].concat(distract.map(d => INS.DRIVER_LABEL[d])).sort();
+    q.push({ id: "c6", text: "Which of these did the plan give as a reason for this mix?", options: opts.concat(["Not sure"]), correct: opts.indexOf(INS.DRIVER_LABEL[key]) });
+    return q;
+  }
+  function susScore(items) {                      // items: ten answers 1..5
+    let s = 0;
+    for (let i = 0; i < 10; i++) s += (i % 2 === 0) ? items[i] - 1 : 5 - items[i];
+    return s * 2.5;
+  }
+
+  // ---- local differential privacy ---------------------------------------
+  function grr(value, domain, eps, rnd) {
+    if (!isFinite(eps)) return value;
+    const k = domain.length, pKeep = Math.exp(eps) / (Math.exp(eps) + k - 1);
+    if (rnd() < pKeep) return value;
+    const idx = domain.indexOf(value), shift = 1 + Math.floor(rnd() * (k - 1));
+    return domain[(idx + shift) % k];
+  }
+  function perturbCodes(c, epsTotal, rnd) {
+    const out = {}, e = epsTotal / K.ATTRS.length;
+    for (const a of K.ATTRS) out[a.key] = grr(c[a.key], a.domain, e, rnd);
+    return out;
+  }
+  const outputFlipProb = eps => 2 / (Math.exp(eps) + 2);
+
+  // ---- portfolio simulation on the embedded monthly returns --------------
+  function weights(cat) { const a = K.MODEL_PORTFOLIOS[cat]; return [a.Equity / 100, a.Gold / 100, a.Gilt / 100, a.Liquid / 100]; }
+  function simulate(R, w, sip, lump, stepUp) {
+    let hold = w.map(x => (lump || 0) * x);
+    const vals = [];
+    for (let t = 0; t < R.length; t++) {
+      if (t > 0 && t % 12 === 0) { const tot = hold.reduce((p, c) => p + c, 0); hold = w.map(x => tot * x); }
+      const amt = (sip || 0) * Math.pow(1 + (stepUp || 0), Math.floor(t / 12));
+      hold = hold.map((h, j) => (h + amt * w[j]) * (1 + R[t][j]));
+      vals.push(hold.reduce((p, c) => p + c, 0));
+    }
+    return vals;
+  }
+  function xirrMonthly(cf) {
+    const f = r => cf.reduce((s, c, t) => s + c / Math.pow(1 + r, t), 0);
+    let lo = -0.05, hi = 0.10;
+    if (f(lo) * f(hi) > 0) return NaN;
+    for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2; if (f(lo) * f(mid) <= 0) hi = mid; else lo = mid; }
+    return Math.pow(1 + (lo + hi) / 2, 12) - 1;
+  }
+  function rollingOutcomes(cat, years, sip, stepUp) {
+    const R = DATA.market.returns, H = years * 12, w = weights(cat), finals = [];
+    let invested = 0;
+    for (let t = 0; t < H; t++) invested += sip * Math.pow(1 + (stepUp || 0), Math.floor(t / 12));
+    for (let s = 0; s + H <= R.length; s++) { const v = simulate(R.slice(s, s + H), w, sip, 0, stepUp); finals.push(v[H - 1]); }
+    finals.sort((a, b) => a - b);
+    const q = p => finals[Math.min(finals.length - 1, Math.max(0, Math.round(p * (finals.length - 1))))];
+    return { windows: finals.length, invested, low: q(0.05), mid: q(0.5), high: q(0.95), worst: finals[0], best: finals[finals.length - 1] };
+  }
+
+  // ---- statistics for the researcher dashboard ---------------------------
+  const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+  const sd = a => { const m = mean(a); return Math.sqrt(a.reduce((s, x) => s + (x - m) * (x - m), 0) / (a.length - 1)); };
+  function lgamma(x) {
+    const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+    let y = x, t = x + 5.5; t -= (x + 0.5) * Math.log(t);
+    let ser = 1.000000000190015;
+    for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+    return -t + Math.log(2.5066282746310005 * ser / x);
+  }
+  function betacf(a, b, x) {
+    let qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap;
+    if (Math.abs(d) < 1e-30) d = 1e-30; d = 1 / d; let h = d;
+    for (let m = 1; m <= 200; m++) {
+      const m2 = 2 * m; let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d; if (Math.abs(d) < 1e-30) d = 1e-30; c = 1 + aa / c; if (Math.abs(c) < 1e-30) c = 1e-30; d = 1 / d; h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d; if (Math.abs(d) < 1e-30) d = 1e-30; c = 1 + aa / c; if (Math.abs(c) < 1e-30) c = 1e-30; d = 1 / d;
+      const del = d * c; h *= del; if (Math.abs(del - 1) < 3e-12) break;
+    }
+    return h;
+  }
+  function ibeta(a, b, x) {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    const bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+    return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+  }
+  const tTwoSidedP = (t, df) => ibeta(df / 2, 0.5, df / (df + t * t));
+  function tCrit(df) { let lo = 0, hi = 50; for (let i = 0; i < 80; i++) { const m = (lo + hi) / 2; if (tTwoSidedP(m, df) > 0.05) lo = m; else hi = m; } return (lo + hi) / 2; }
+  function ci95(a) { if (a.length < 2) return [NaN, NaN]; const m = mean(a), h = tCrit(a.length - 1) * sd(a) / Math.sqrt(a.length); return [m - h, m + h]; }
+  function oneSampleT(a, mu) { const t = (mean(a) - mu) / (sd(a) / Math.sqrt(a.length)); return { t, p: tTwoSidedP(t, a.length - 1) }; }
+  function cronbach(rows) {                       // rows: participants x items
+    const k = rows[0].length, n = rows.length; if (k < 2 || n < 3) return NaN;
+    let sv = 0;
+    for (let j = 0; j < k; j++) { const col = rows.map(r => r[j]); const s = sd(col); sv += s * s; }
+    const tot = rows.map(r => r.reduce((p, c) => p + c, 0)), st = sd(tot);
+    return k / (k - 1) * (1 - sv / (st * st));
+  }
+
+  return { pyRound, inr, inrWords, tierFromScore, profile, plan, sipRequired, explain, vignettePlan, comprehensionQuiz, susScore,
+    grr, perturbCodes, outputFlipProb, weights, simulate, xirrMonthly, rollingOutcomes,
+    mean, sd, ci95, oneSampleT, tTwoSidedP, cronbach };
+}
+if (typeof module !== "undefined") module.exports = createEngine;
+</script>
+<script>/* PFW browser app: views for the four research objectives, the study flow and the researcher dashboard. */
+(function () {
+  "use strict";
+  const E = createEngine(DATA), K = DATA.core, INS = DATA.instruments, TB = DATA.tables, SM = DATA.summary, MK = DATA.market;
+  const RUPEE = "₹", APP_VERSION = "web-1.0.0";
+  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const f0 = x => Number(x).toFixed(0), f1 = x => Number(x).toFixed(1), f2 = x => Number(x).toFixed(2);
+  const C = { s1: "var(--s1)", s2: "var(--s2)", s3: "var(--s3)", s4: "var(--s4)", s5: "var(--s5)", accent: "var(--accent)" };
+  const TIER_COL = { Low: C.s1, Medium: C.s2, High: C.s3 };
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+  function rng(seed) { let a = seed >>> 0; return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  const ASHA = INS.VIGNETTES.V1;
+  const state = {
+    register: "Guided", tier: null, codes: Object.assign({}, ASHA.codes), example: true, goalAmt: ASHA.goal_amount_today, goalYears: ASHA.goal_years,
+    privacy: "device", eps: 2, patView: "tier", calc: { cat: "Moderate", sip: 10000, years: 10, step: 8 }, unlocked: false, imported: [], sim: [], scr: null
+  };
+  const ASSET_PLAIN = { Equity: "Shares of big Indian companies", Gold: "Gold", Gilt: "Government bonds", Liquid: "Savings-type fund" };
+  const ASSET_TECH = { Equity: "Nifty 50 index fund", Gold: "Gold ETF", Gilt: "Gilt fund", Liquid: "Liquid fund" };
+  const CAT_WORD = { Conservative: "Careful plan", Moderate: "Balanced plan", Aggressive: "Growth plan" };
+  const GLOSSARY = [
+    ["Shares (equity)", "A small part of a company. Prices move up and down a lot, but over long periods shares have grown the most."],
+    ["Index fund", "A fund that buys every company in a list such as the Nifty 50, at low cost."],
+    ["Government bond (gilt) fund", "A fund that lends money to the government. Steadier than shares."],
+    ["Liquid fund", "A fund that behaves much like a savings account. Very steady, low growth."],
+    ["SIP", "A fixed amount you invest every month."],
+    ["Emergency fund", "Cash kept aside for surprises such as illness or job loss, usually six months of expenses."],
+    ["Inflation", "Prices rising over time, so the same money buys less later."]];
+
+  // ------------------------------------------------------------------ charts
+  const narrow = () => window.innerWidth < 600;      // charts are drawn at phone or desktop scale so text stays readable
+  const CW = () => narrow() ? 340 : 640;
+  function hbar(rows, o) {
+    o = o || {}; const W = CW(), nw = narrow(), lw = nw ? 0 : (o.lw || 200), bh = nw ? 16 : 20, gap = nw ? 26 : 10, pad = nw ? 18 : 4, rw = o.rw || 110;
+    const max = o.max || Math.max.apply(null, rows.map(r => r.value)) || 1, H = rows.length * (bh + gap) + (nw ? 0 : pad);
+    let g = "";
+    rows.forEach((r, i) => {
+      const y = pad + i * (bh + gap), w = Math.max(2, (W - lw - rw) * Math.max(0, r.value) / max);
+      g += (nw ? `<text x="0" y="${y - 5}">${esc(r.label)}</text>` : `<text x="${lw - 8}" y="${y + 14}" text-anchor="end">${esc(r.label)}</text>`) +
+        `<rect x="${lw}" y="${y}" width="${w.toFixed(1)}" height="${bh}" rx="4" fill="${r.color || C.accent}"><title>${esc(r.label)}: ${esc(r.text)}</title></rect>` +
+        `<text class="v" x="${(lw + w + 8).toFixed(1)}" y="${y + (nw ? 12 : 14)}">${esc(r.text)}</text>`;
+    });
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label || "Bar chart")}">${g}</svg>`;
+  }
+  function niceTicks(lo, hi, n) { const st = (hi - lo) / n; const out = []; for (let i = 0; i <= n; i++) out.push(lo + st * i); return out; }
+  function vbars(cats, series, o) {
+    o = o || {}; const W = CW(), H = narrow() ? 220 : 250, L = 34, R = 6, T = 12, B = 34, max = o.max || Math.max.apply(null, series.flatMap(s => s.values)) * 1.12;
+    const pw = (W - L - R) / cats.length, bw = Math.min(34, (pw - (narrow() ? 4 : 10)) / series.length);
+    let g = "";
+    niceTicks(0, max, 4).forEach(t => { const y = T + (H - T - B) * (1 - t / max); g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 4}" text-anchor="end">${f0(t)}</text>`; });
+    cats.forEach((c, i) => {
+      const x0 = L + i * pw + (pw - bw * series.length) / 2;
+      series.forEach((s, j) => {
+        const h = (H - T - B) * s.values[i] / max, x = x0 + j * bw, y = H - B - h;
+        g += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${s.color}"><title>${esc(s.name)}, ${esc(c)}: ${f1(s.values[i])}${o.unit || ""}</title></rect>`;
+        if (o.labels) g += `<text class="v" x="${(x + bw / 2 - 1).toFixed(1)}" y="${(y - 4).toFixed(1)}" text-anchor="middle" style="font-size:10px">${f0(s.values[i])}</text>`;
+      });
+      g += `<text x="${(L + i * pw + pw / 2).toFixed(1)}" y="${H - B + 16}" text-anchor="middle">${esc(narrow() ? c.replace(" literacy", "") : c)}</text>`;
+    });
+    if (o.xTitle) g += `<text x="${(L + W - R) / 2}" y="${H - 2}" text-anchor="middle">${esc(o.xTitle)}</text>`;
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label || "Bar chart")}">${g}</svg>` + legend(series);
+  }
+  function lines(labels, series, o) {
+    o = o || {}; const W = CW(), H = narrow() ? 230 : 270, L = 42, R = 14, T = 12, B = 30, all = series.flatMap(s => s.values.filter(v => v != null));
+    let lo = o.min != null ? o.min : Math.min.apply(null, all), hi = o.max != null ? o.max : Math.max.apply(null, all);
+    const tr = v => o.log ? Math.log(v) : v; const a = tr(lo), b = tr(hi);
+    const X = i => L + (W - L - R) * i / (labels.length - 1), Y = v => T + (H - T - B) * (1 - (tr(v) - a) / (b - a));
+    let g = "";
+    (o.ticks || niceTicks(lo, hi, 4)).forEach(t => { g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${L - 6}" y="${Y(t) + 4}" text-anchor="end">${o.fmt ? o.fmt(t) : f0(t)}</text>`; });
+    labels.forEach((l, i) => { if (o.xShow ? o.xShow(l, i) && (!narrow() || Number(l.slice(0, 4)) % 8 === 0) : true) g += `<text x="${X(i)}" y="${H - B + 16}" text-anchor="middle">${esc(o.xFmt ? o.xFmt(l) : l)}</text>`; });
+    if (o.markX != null) g += `<line class="axis" stroke-dasharray="4 3" x1="${X(o.markX)}" x2="${X(o.markX)}" y1="${T}" y2="${H - B}"/>`;
+    if (o.ref != null) g += `<line class="axis" stroke-dasharray="4 3" x1="${L}" x2="${W - R}" y1="${Y(o.ref)}" y2="${Y(o.ref)}"/><text x="${W - R}" y="${Y(o.ref) - 5}" text-anchor="end">${esc(o.refLabel || "")}</text>`;
+    series.forEach(s => {
+      let d = "", started = false;
+      s.values.forEach((v, i) => { if (v == null) return; d += (started ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1); started = true; });
+      g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.2" stroke-linejoin="round"/>`;
+      if (o.dots) s.values.forEach((v, i) => { if (v != null) g += `<circle cx="${X(i)}" cy="${Y(v)}" r="4" fill="${s.color}"><title>${esc(s.name)} at ${esc(labels[i])}: ${o.fmt ? o.fmt(v) : f1(v)}</title></circle>`; });
+    });
+    if (o.xTitle) g += `<text x="${(L + W - R) / 2}" y="${H - 1}" text-anchor="middle">${esc(o.xTitle)}</text>`;
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label || "Line chart")}">${g}</svg>` + legend(series);
+  }
+  function dotci(rows, o) {
+    const W = CW(), nw = narrow(), lw = nw ? 60 : 150, rt = nw ? 96 : 120, bh = 34, T = 8, B = 26, H = rows.length * bh + T + B, X = v => lw + (W - lw - rt) * (v - o.min) / (o.max - o.min);
+    let g = "";
+    niceTicks(o.min, o.max, 4).forEach(t => { g += `<line class="grid" x1="${X(t)}" x2="${X(t)}" y1="${T}" y2="${H - B}"/><text x="${X(t)}" y="${H - 8}" text-anchor="middle">${f0(t)}</text>`; });
+    if (o.ref != null) g += `<line class="axis" stroke-dasharray="4 3" x1="${X(o.ref)}" x2="${X(o.ref)}" y1="${T}" y2="${H - B}"/>`;
+    rows.forEach((r, i) => {
+      const y = T + i * bh + bh / 2;
+      g += `<text x="${lw - 10}" y="${y + 4}" text-anchor="end">${esc(nw ? r.label.replace(" literacy", "") : r.label)}</text>`;
+      if (isFinite(r.mean)) {
+        if (isFinite(r.lo)) g += `<line x1="${X(Math.max(o.min, r.lo))}" x2="${X(Math.min(o.max, r.hi))}" y1="${y}" y2="${y}" stroke="${r.color}" stroke-width="3"/>`;
+        g += `<circle cx="${X(r.mean)}" cy="${y}" r="6" fill="${r.color}"/><text class="v" x="${W - rt + 8}" y="${y + 4}">${esc(r.text)}</text>`;
+      } else g += `<text x="${lw + 6}" y="${y + 4}">no data yet</text>`;
+    });
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label || "Interval chart")}">${g}</svg>`;
+  }
+  const legend = series => series.length < 2 ? "" : `<div class="legend">${series.map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("")}</div>`;
+  function table(head, rows, numFrom, hl) {
+    numFrom = numFrom == null ? 1 : numFrom;
+    return `<div class="tablewrap"><table><thead><tr>${head.map((h, i) => `<th class="${i >= numFrom ? "n" : ""}">${esc(h)}</th>`).join("")}</tr></thead><tbody>` +
+      rows.map((r, ri) => `<tr class="${hl && hl(ri) ? "hl" : ""}">${r.map((c, i) => `<td class="${i >= numFrom ? "n" : ""}">${c}</td>`).join("")}</tr>`).join("") + `</tbody></table></div>`;
+  }
+  const tile = (big, small) => `<div class="card tile"><b>${big}</b><span>${small}</span></div>`;
+
+  // ------------------------------------------------------------------ form helpers
+  let uid = 0;
+  function radio(name, legendText, options, horizontal) {
+    return `<fieldset data-q="${esc(name)}"><legend>${esc(legendText)}</legend><div class="opts ${horizontal ? "h" : ""}">` +
+      options.map((o, i) => `<label class="opt" for="r${++uid}"><input type="radio" id="r${uid}" name="${esc(name)}" value="${i}"><span>${esc(o)}</span></label>`).join("") + `</div></fieldset>`;
+  }
+  const picked = (root, name) => { const el = root.querySelector(`input[name="${name}"]:checked`); return el ? Number(el.value) : null; };
+  function missing(root, names) {
+    const miss = names.filter(n => picked(root, n) === null);
+    $$("fieldset", root).forEach(f => f.style.outline = "");
+    if (miss.length) { const f = root.querySelector(`fieldset[data-q="${miss[0]}"]`); if (f) { f.style.outline = "2px solid var(--crit)"; f.style.outlineOffset = "6px"; f.scrollIntoView({ block: "center" }); } }
+    return miss.length;
+  }
+
+  // ------------------------------------------------------------------ plan rendering (shared by planner and study)
+  function planHtml(pl, iface, register, key) {
+    const ev = DATA.evidence.evidence[pl.risk_cat];
+    if (iface === "Standard") {
+      return `<div class="plan-text">${esc(E.explain(pl, "Expert"))}</div>` +
+        table(["Asset class", "Weight (%)"], Object.keys(pl.allocation).map(k => [ASSET_TECH[k], pl.allocation[k]]));
+    }
+    const plain = register === "Plain", names = plain ? ASSET_PLAIN : ASSET_TECH;
+    const bars = hbar(Object.keys(pl.allocation).map(k => ({ label: names[k], value: pl.allocation[k], text: plain ? `${RUPEE}${pl.allocation[k]} of every ${RUPEE}100` : pl.allocation[k] + "%" })),
+      { max: 100, lw: 230, rw: 150, label: "Where the money goes" });
+    const amt = pl.sip_affordable ? pl.sip : pl.sip_start;
+    return bars + `<div class="grid g2">` +
+      tile(E.inr(E.pyRound(amt / 100) * 100), plain ? "Monthly amount to start with" : "SIP in year one") +
+      tile(E.inr(E.pyRound(pl.ef_gap / 1000) * 1000), plain ? "Rainy-day money to build first" : "Emergency fund gap") + `</div>` +
+      `<div class="plan-text">${esc(E.explain(pl, register))}</div>` +
+      (register !== "Expert" ? `<div class="note"><b>What could go wrong?</b> This is not a guaranteed return. In the worst past period a plan like this fell by about ${Math.abs(E.pyRound(ev.max_dd))}% before recovering.</div>` +
+        `<details><summary>What do these words mean?</summary><div class="stack small" style="margin-top:8px">${GLOSSARY.map(g => `<div><b>${esc(g[0])}</b>: ${esc(g[1])}</div>`).join("")}</div></details>` : "") +
+      `<div class="row"><span class="small muted">Reading level</span><div class="seg" role="group" aria-label="Reading level">` +
+      K.REGISTERS.map(r => `<button type="button" data-reg="${r}" data-key="${key}" aria-pressed="${r === register}">${r === "Plain" ? "Simple" : r === "Guided" ? "Standard" : "Detailed"}</button>`).join("") + `</div></div>`;
+  }
+
+  // ================================================================== HOME
+  function localResponses() { return store.get("pfw_responses", []); }
+  function viewHome() {
+    const real = localResponses().length, target = CONFIG.TARGET_PER_TIER * 3;
+    return `<section class="card"><h1>Plan your money, in your words</h1>
+      <p class="lead">A research platform that suggests a savings and investment plan, explains it at the reading level that suits you, and keeps your answers on your own device.</p>
+      <div class="row"><a class="btn primary" href="#plan">Get my plan</a><a class="btn" href="#study">Take part in the study</a><a class="btn" href="#evaluation">See the research results</a></div></section>
+      <section class="grid g4">${tile(SM.nfcs_rows.toLocaleString("en-IN"), "survey respondents behind the user model (NFCS 2021 and 2024)")}
+      ${tile(SM.E.months, "months of Indian fund NAVs behind every plan, " + esc(SM.E.period))}
+      ${tile(f2(SM.B.table.find(r => r.screener.indexOf("at most 4") > 0).quadratic_weighted_kappa), "agreement of the 4-question literacy screener with the full quiz (kappa)")}
+      ${tile(real + " / " + target, "study responses saved on this device")}</section>
+      <section class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(440px,100%),1fr))">
+      ${objCard("Objective 1", "Patterns in financial practice", "Literacy tiers, resilience indicators and behaviour patterns from 52,657 survey respondents, by literacy, gender and age.", "patterns", "Explore patterns", "good", "Analysis complete")}
+      ${objCard("Objective 2", "Privacy-preserving processing", "Your profile is worked out in this browser. The privacy lab shows what local differential privacy does to a recommendation.", "privacy", "Open the privacy lab", "good", "Design evaluated")}
+      ${objCard("Objective 3", "Personalised investment strategy", "A suitability profile, a four-asset portfolio and an inflation-aware monthly amount, each checked against Indian market history.", "plan", "Get my plan", "good", "Engine and backtest complete")}
+      ${objCard("Objective 4", "Experience across literacy levels", "The same plan at three reading levels, an offline evaluation, and a participant study with a live researcher dashboard.", "evaluation", "See the evaluation", real >= target ? "good" : "warn", real >= target ? "Study complete" : "Offline part complete; participant study open")}
+      </section>
+      <section class="card"><h2>How the platform is built</h2>
+      ${table(["Phase", "What happens", "Where"], [
+        ["Offline model building", "Survey data gives the literacy tiers and screener; fund NAVs give the evidence and planning rates. Only these parameters are shipped.", "Research side"],
+        ["Onboarding", "Up to four literacy questions, then ten profile answers and an optional goal.", "Your device"],
+        ["Strategy engine", "Tolerance and capacity give a risk category, a portfolio and a monthly amount.", "Your device"],
+        ["Adaptive display", "The plan is shown at your reading level, with the same facts at every level.", "Your device"],
+        ["Privacy gate", "You choose what leaves: nothing, a noised plan type, or your answers by consent.", "Your device"],
+        ["Evaluation", "Readability, privacy and backtest measures, plus the participant study.", "Research side"]], 9)}</section>`;
+  }
+  const objCard = (k, t, d, href, cta, tone, status) => `<div class="card"><div class="row"><span class="pill info">${k}</span><span class="pill ${tone}">${status}</span></div><h2>${t}</h2><p class="muted">${d}</p><div><a class="btn" href="#${href}">${cta}</a></div></div>`;
+
+  // ================================================================== PLAN (RO3 + adaptive display)
+  function currentPlan() { return E.plan(state.codes, state.goalAmt, state.goalAmt ? state.goalYears : null); }
+  function viewPlan() {
+    const sel = k => { const q = INS.PROFILE[k], seen = new Set(); return `<label class="f">${esc(q.text)}<select id="in_${k}" data-attr="${k}">` +
+      q.options.map(o => `<option value="${o[1]}" data-label="${esc(o[0])}" ${!seen.has(o[1]) && state.codes[k] === o[1] && seen.add(o[1]) ? "selected" : ""}>${esc(o[0])}</option>`).join("") + `</select></label>`; };
+    return `<section class="card"><h1>Your plan</h1><p class="lead">Change any answer and the plan updates at once. Nothing you enter leaves this browser.</p></section>
+      <section class="split"><div class="card" id="planInputs"><h2>Your answers</h2>
+      <div id="scrBox">${screenerBox()}</div>
+      ${INS.PROFILE_ORDER.map(sel).join("")}
+      <label class="f">Goal amount in today's rupees (leave 0 to plan for retirement at 60)<input type="number" id="in_goalAmt" min="0" step="50000" value="${state.goalAmt || 0}"></label>
+      <label class="f">Years until you need it<input type="number" id="in_goalYears" min="1" max="40" value="${state.goalYears || 10}"></label>
+      </div><div class="stack" id="planPanel">${planPanel()}</div></section>`;
+  }
+  function screenerBox() {
+    const s = state.scr;
+    if (!s) return `<div class="note info"><b>Reading level: ${state.register === "Plain" ? "Simple" : state.register === "Guided" ? "Standard" : "Detailed"}.</b> ${state.tier ? "Set from your answers to the money questions." : "Answer up to four quick money questions and the app picks the level for you."}
+      <div style="margin-top:8px"><button type="button" id="scrStart">${state.tier ? "Redo the questions" : "Find my level"}</button></div></div>`;
+    const q = INS.LITERACY[s.node.item];
+    return `<div class="note info">${radio("scr", `Question ${s.asked + 1}. ${q.text}`, q.options)}<div style="margin-top:8px"><button type="button" class="primary" id="scrNext">Next</button></div></div>`;
+  }
+  function planPanel() {
+    const pl = currentPlan(), ev = DATA.evidence.evidence[pl.risk_cat];
+    const H = Math.min(15, Math.max(3, E.pyRound(pl.horizon_years))), amt = E.pyRound((pl.sip_affordable ? pl.sip : pl.sip_start) / 100) * 100;
+    const out = E.rollingOutcomes(pl.risk_cat, H, amt, K.STEP_UP);
+    const ser = MK.series[pl.risk_cat], liq = MK.series["Liquid fund"];
+    return `<div class="card"><div class="row"><h2>${state.register === "Expert" ? pl.risk_cat + " portfolio" : CAT_WORD[pl.risk_cat]}</h2>
+      ${state.example ? `<span class="pill warn">Example: ${esc(ASHA.name)}. Change the answers to see yours</span>` : `<span class="pill good">Your own plan</span>`}</div>
+      ${planHtml(pl, "Adaptive", state.register, "plan")}</div>
+      <div class="card"><h2>What history says about this plan</h2>
+      <p class="muted">If you had put in ${E.inr(amt)} a month, raised ${f0(K.STEP_UP * 100)}% each year, for ${H} years, starting in any of ${out.windows} months since April 2007:</p>
+      ${hbar([{ label: "You would have put in", value: out.invested, text: E.inrWords(out.invested), color: C.s5 },
+        { label: "Poor outcome (1 in 20)", value: out.low, text: E.inrWords(out.low), color: C.s2 },
+        { label: "Middle outcome", value: out.mid, text: E.inrWords(out.mid), color: C.s1 },
+        { label: "Good outcome (1 in 20)", value: out.high, text: E.inrWords(out.high), color: C.s3 }], { lw: 190, rw: 120, label: "Historical outcomes" })}
+      ${pl.horizon_years > 15 ? `<p class="small muted">Your goal is ${f0(pl.horizon_years)} years away. The record is too short to test that, so this shows 15 years.</p>` : ""}
+      ${lines(MK.months, [{ name: pl.risk_cat + " portfolio", color: C.s1, values: ser }, { name: "Liquid fund (savings-like)", color: C.s5, values: liq }],
+        { log: true, ticks: [1, 2, 4, 8], fmt: v => RUPEE + v, xShow: (l, i) => l.slice(5) === "01" && Number(l.slice(0, 4)) % 4 === 0, xFmt: l => l.slice(0, 4), label: "Growth of one rupee" })}
+      <p class="small muted">Growth of ${RUPEE}1 since April 2007, yearly rebalancing. Largest fall from a peak: ${f0(Math.abs(ev.max_dd))}%. Worst calendar year: ${f0(ev.worst_year)}%. Taxes and exit loads are not included.</p></div>`;
+  }
+  function bindPlan() {
+    const refresh = () => { $("#planPanel").innerHTML = planPanel(); };
+    $$("#planInputs select").forEach(el => el.addEventListener("change", () => { state.codes[el.dataset.attr] = Number(el.value); state.example = false; refresh(); }));
+    ["goalAmt", "goalYears"].forEach(k => $("#in_" + k).addEventListener("input", () => {
+      const a = Number($("#in_goalAmt").value) || 0, y = Math.min(40, Math.max(1, Number($("#in_goalYears").value) || 10));
+      state.goalAmt = a > 0 ? a : null; state.goalYears = y; state.example = false; refresh();
+    }));
+    $("#scrBox").addEventListener("click", ev => {
+      if (ev.target.id === "scrStart") { state.scr = { node: DATA.screener, asked: 0 }; $("#scrBox").innerHTML = screenerBox(); }
+      if (ev.target.id === "scrNext") {
+        const a = picked($("#scrBox"), "scr"); if (a === null) return;
+        const s = state.scr, q = INS.LITERACY[s.node.item];
+        s.node = a === q.correct ? s.node.right : s.node.wrong; s.asked++;
+        if (!s.node.item) { state.tier = s.node.tier; state.register = K.TIER_TO_REGISTER[state.tier]; state.scr = null; refresh(); }
+        $("#scrBox").innerHTML = screenerBox();
+      }
+    });
+  }
+
+  // ================================================================== PRIVACY (RO2)
+  function viewPrivacy() {
+    const mech = Array.from(new Set(TB.ldp.map(r => r.mechanism))), eps = Array.from(new Set(TB.ldp.map(r => r.eps_total)));
+    const ser = (m, name, color) => ({ name, color, values: eps.map(e => TB.ldp.find(r => r.mechanism === m && r.eps_total === e).category_flip_pct) });
+    return `<section class="card"><h1>Privacy</h1><p class="lead">Your plan is worked out in this browser. This page shows what you can choose to share, and what privacy protection does to a recommendation.</p></section>
+      <section class="grid g2"><div class="card"><h2>Your choice</h2>
+      ${radio("priv", "What may leave this device?", ["Nothing. Keep everything on this device.", "Only my plan type, mixed up first so nobody can be sure what mine was.", "All my answers, without my name, to help research."])}
+      <div id="privNote" class="note info"></div></div>
+      <div class="card"><h2>Privacy lab</h2><p class="muted">Local differential privacy adds random noise before anything is shared. A smaller budget (epsilon) means more privacy and more noise. Try it on the plan from the Plan tab.</p>
+      <label class="f">Privacy budget, epsilon: <span id="epsVal"></span><input type="range" id="eps" min="-1" max="5" step="0.25" value="${Math.log2(state.eps)}"></label>
+      <div class="grid g2" id="labOut"></div><p class="small muted" id="labNote"></p></div></section>
+      <section class="card"><h2>Where the noise goes decides the result</h2>
+      <p class="muted">Share of ${SM.D.n.toLocaleString("en-IN")} survey profiles whose risk category changes, by total privacy budget. A random profile changes it ${f0(SM.D.chance_flip_pct)}% of the time.</p>
+      ${lines(eps.map(String), [ser(mech[0], "Noise on the 10 answers: randomised response", C.s1), ser(mech[1], "Noise on the 10 answers: ordinal mechanism", C.s2), ser(mech[2], "Profile on device, noise on the result only", C.s3)],
+        { min: 0, max: 70, ticks: [0, 20, 40, 60], dots: true, fmt: v => f0(v) + "%", xTitle: "Total privacy budget per user (epsilon)", ref: SM.D.chance_flip_pct, refLabel: "random profile", label: "Recommendation changes by privacy budget" })}
+      <div class="note good"><b>Design decision.</b> Noising the ten answers ruins the recommendation at any budget normally called private. Working the profile out on the device and noising only the three-level result keeps it: ${f0(SM.D.output_flip_pct["2.0"])}% of shared reports change at epsilon 2 and ${f1(SM.D.output_flip_pct["4.0"])}% at epsilon 4, and your own plan is never altered.</div></section>
+      <section class="card"><h2>The research side still learns what it needs</h2>
+      <p class="muted">Error of a population estimate recovered from the noisy reports of ${SM.D.n.toLocaleString("en-IN")} people, in percentage points.</p>
+      ${table(["Total epsilon", "Noise on answers: flip %", "Noise on result: flip %", "Estimate error, answers (pp)", "Estimate error, result (pp)"],
+        TB.ldp_agg.map(r => [r.eps_total, f1(TB.ldp.find(x => x.mechanism === mech[0] && x.eps_total === r.eps_total).category_flip_pct),
+          f1(TB.ldp.find(x => x.mechanism === mech[2] && x.eps_total === r.eps_total).category_flip_pct), f2(r.input_level_emergency_fund_share_mae_pp), f2(r.output_level_aggressive_share_mae_pp)]), 0, i => TB.ldp_agg[i].eps_total === 2)}</section>`;
+  }
+  function bindPrivacy() {
+    const notes = { device: "Nothing is sent. This is the default.", noisy: "Only one of three plan types would be sent, after randomised response at epsilon 2. About 1 in 5 reports is changed on purpose.", full: "Your ten answers would be sent without your name. Choose this only if you want to help the research." };
+    const keys = ["device", "noisy", "full"], root = $("#view");
+    root.querySelector(`input[name="priv"][value="${keys.indexOf(state.privacy)}"]`).checked = true;
+    const upd = () => { state.privacy = keys[picked(root, "priv")]; $("#privNote").textContent = notes[state.privacy]; };
+    $$('input[name="priv"]').forEach(el => el.addEventListener("change", upd)); upd();
+    const lab = () => {
+      state.eps = Math.pow(2, Number($("#eps").value));
+      const base = E.profile(state.codes, state.goalAmt ? state.goalYears : null).risk_cat, r = rng(12345); let flips = 0; const N = 1500;
+      for (let i = 0; i < N; i++) if (E.profile(E.perturbCodes(state.codes, state.eps, r), state.goalAmt ? state.goalYears : null).risk_cat !== base) flips++;
+      $("#epsVal").textContent = f2(state.eps);
+      $("#labOut").innerHTML = tile(f0(100 * flips / N) + "%", "of the time this profile gets a different plan when the 10 answers are noised") +
+        tile(f1(100 * E.outputFlipProb(state.eps)) + "%", "of shared reports change when only the result is noised");
+      $("#labNote").textContent = `Current profile: ${state.example ? "the example user" : "your answers"} (${base}). Each of the 10 answers gets epsilon ${f2(state.eps / 10)}.`;
+    };
+    $("#eps").addEventListener("input", lab); lab();
+  }
+
+  // ================================================================== PATTERNS (RO1)
+  function viewPatterns() {
+    const N = DATA.nfcs, G = N.groups, views = { tier: ["All adults", "Low literacy", "Medium literacy", "High literacy"], gender: ["All adults", "Men", "Women"],
+      age: ["Age 18-24", "Age 25-34", "Age 35-44", "Age 45-54", "Age 55-64", "Age 65+"] };
+    const cols = views[state.patView].map(n => G.find(g => g.group === n));
+    const cell = v => `<div class="row" style="gap:6px;justify-content:flex-end;flex-wrap:nowrap"><span>${f0(v)}%</span><div class="bar" style="width:64px"><i style="width:${Math.min(100, v)}%"></i></div></div>`;
+    const inds = N.indicators.concat(N.extra_indicators);
+    const tiers = TB.tiers.find(r => r.sample === "All");
+    return `<section class="card"><h1>Patterns in financial practice</h1><p class="lead">What ${N.n.toLocaleString("en-IN")} survey respondents show about literacy, resilience and behaviour. Shares are survey-weighted.</p>
+      <div class="note"><b>These are US households</b> (National Financial Capability Study, 2021 and 2024). They shape the user model; Indian participants re-validate it in the study.</div></section>
+      <section class="grid g4">${tile(f0(tiers.Low_pct_weighted) + "%", "Low literacy: 0 to 2 of 7 quiz items correct")}${tile(f0(tiers.Medium_pct_weighted) + "%", "Medium literacy: 3 or 4 correct")}
+      ${tile(f0(tiers.High_pct_weighted) + "%", "High literacy: 5 to 7 correct")}${tile(f1(G[0].mean_resilience) + " / 5", "average resilience score")}</section>
+      <section class="grid g2"><div class="card"><h2>Literacy score, 2021 and 2024</h2>
+      ${vbars(["0", "1", "2", "3", "4", "5", "6", "7"], [{ name: "2021", color: C.s1, values: N.score_dist["2021"] }, { name: "2024", color: C.s2, values: N.score_dist["2024"] }], { xTitle: "Quiz items correct (of 7); bars show % of adults", unit: "%" })}</div>
+      <div class="card"><h2>Resilience score by literacy tier</h2>
+      ${vbars(["0", "1", "2", "3", "4", "5"], ["Low literacy", "Medium literacy", "High literacy"].map((n, i) => ({ name: n, color: [C.s1, C.s2, C.s3][i], values: N.resilience_dist[n] })), { xTitle: "Resilience indicators met (of 5); bars show % of the tier", unit: "%" })}</div></section>
+      <section class="card"><div class="row"><h2>Behaviour patterns</h2><div class="seg" role="group" aria-label="Compare by">
+      ${[["tier", "By literacy"], ["gender", "By gender"], ["age", "By age"]].map(v => `<button type="button" data-pat="${v[0]}" aria-pressed="${state.patView === v[0]}">${v[1]}</button>`).join("")}</div></div>
+      ${table(["Indicator"].concat(cols.map(c => c.group)), [["Respondents"].concat(cols.map(c => c.n.toLocaleString("en-IN"))), ["Mean literacy score (of 7)"].concat(cols.map(c => f2(c.mean_literacy))),
+        ["Mean resilience score (of 5)"].concat(cols.map(c => f2(c.mean_resilience)))].concat(inds.map(k => [esc(k)].concat(cols.map(c => cell(c[k])))))
+        .concat(state.patView === "tier" ? [] : [["In the Low literacy tier"].concat(cols.map(c => cell(c.tier_Low)))]))}
+      <p class="small muted">The first five indicators make up the resilience score. It replaces the two-cluster split of the earlier report with a transparent 0 to 5 scale.</p></section>
+      <section class="grid g2"><div class="card"><h2>Self-rating is a weak guide</h2><p class="muted">Share in the Low tested tier at each self-rating (1 = very low, 7 = very high).</p>
+      ${vbars(N.self_rating.map(r => String(r.rating)), [{ name: "In Low tier", color: C.s1, values: N.self_rating.map(r => r.pct_low_tier) }], { labels: true, max: 80, xTitle: "Self-rated financial knowledge", unit: "%" })}</div>
+      <div class="card"><h2>Literacy and digital readiness</h2><p class="muted">Share of all adults in each cell. The two are almost unrelated (Spearman ${f2(SM.A.digital_literacy_spearman)}).</p>
+      ${table(["Literacy tier"].concat(Object.keys(TB.digital[0]).filter(k => k !== "lit_tier")), TB.digital.map(r => [r.lit_tier].concat(Object.keys(r).filter(k => k !== "lit_tier").map(k =>
+        `<span style="display:block;padding:4px 6px;border-radius:6px;background:color-mix(in srgb, var(--s1) ${Math.round(r[k] * 4)}%, var(--surface))">${f1(r[k])}%</span>`))))}</div></section>
+      <section class="card"><h2>The seven quiz items</h2>
+      ${table(["Item", "Correct %", "Don't know %", "Item-rest r", "Discrimination a", "Difficulty b"], TB.items.map(r => [r.item, f1(r.pct_correct_weighted), f1(r.pct_dont_know), f2(r.item_rest_r), f2(r.irt_discrimination_a), f2(r.irt_difficulty_b)]))}
+      <p class="small muted">KR-20 reliability ${f2(SM.A.kr20)}. Deleting every "don't know" answer would drop ${f0(SM.A.ro1_rule_dropped_pct_low)}% of Low-tier respondents against ${f0(SM.A.ro1_rule_dropped_pct_high)}% of High-tier ones, so "don't know" is kept and scored as incorrect.</p></section>`;
+  }
+
+  // ================================================================== MARKET (RO3 evidence)
+  function viewMarket() {
+    const s = MK.series, c = state.calc;
+    return `<section class="card"><h1>Market evidence</h1><p class="lead">Every plan is checked against ${SM.E.months} months of Indian fund NAVs, ${esc(SM.E.period)}: a Nifty 50 index fund, a gold ETF, a gilt fund and a liquid fund.</p></section>
+      <section class="card"><h2>Growth of ${RUPEE}1</h2>
+      ${lines(MK.months, [{ name: "Aggressive", color: C.s3, values: s.Aggressive }, { name: "Moderate", color: C.s2, values: s.Moderate }, { name: "Conservative", color: C.s1, values: s.Conservative },
+        { name: "Nifty 50 index fund", color: C.s4, values: s["Nifty 50 index fund"] }, { name: "Liquid fund", color: C.s5, values: s["Liquid fund"] }],
+        { log: true, ticks: [0.5, 1, 2, 4, 8], fmt: v => RUPEE + v, xShow: (l, i) => l.slice(5) === "01" && Number(l.slice(0, 4)) % 4 === 0, xFmt: l => l.slice(0, 4), label: "Growth of one rupee by portfolio" })}
+      ${table(["Strategy", "CAGR %", "Volatility %", "Sharpe vs liquid", "Max drawdown %", "Worst year %", RUPEE + "1 became"],
+        TB.perf.map(r => [esc(r.strategy), f2(r.cagr_pct), f2(r.volatility_pct), r.sharpe_vs_liquid == null ? "" : f2(r.sharpe_vs_liquid), f1(r.max_drawdown_pct), f1(r.worst_calendar_year_pct), f2(r.final_value_of_1_rupee)]), 1, i => /^PFW (Conservative|Moderate|Aggressive)$/.test(TB.perf[i].strategy))}
+      <p class="small muted">Highlighted rows are the three model portfolios. NAVs are net of fund expenses; taxes and exit loads are not modelled. The trend overlay lowered drawdowns a little and returns a little, and is not used.</p></section>
+      <section class="grid g2"><div class="card"><h2>SIP calculator on real history</h2>
+      <label class="f">Portfolio<select id="c_cat">${K.RISK_CATS.map(k => `<option ${c.cat === k ? "selected" : ""}>${k}</option>`).join("")}</select></label>
+      <label class="f">Monthly amount (${RUPEE})<input type="number" id="c_sip" min="500" step="500" value="${c.sip}"></label>
+      <label class="f">Years (3 to 15)<input type="number" id="c_years" min="3" max="15" value="${c.years}"></label>
+      <label class="f">Raise it each year by (%)<input type="number" id="c_step" min="0" max="20" value="${c.step}"></label></div>
+      <div class="card" id="calcOut"></div></section>
+      <section class="grid g2"><div class="card"><h2>Ten-year SIP returns</h2><p class="muted">Yearly return (XIRR) across ${TB.sip[0].windows} starting months.</p>
+      ${table(["Strategy", "Poor (5th pct) %", "Median %", "Good (95th pct) %", "Beat liquid %"], TB.sip.filter(r => !/overlay/.test(r.strategy)).map(r => [esc(r.strategy), f2(r.xirr_p05_pct), f2(r.xirr_median_pct), f2(r.xirr_p95_pct), f1(r.pct_windows_beating_liquid)]))}</div>
+      <div class="card"><h2>Does the assumed return meet the goal?</h2><p class="muted">Share of ten-year windows in which a SIP sized with each assumption reached its target.</p>
+      ${table(["Portfolio", "Assumption", "Goal met %", "Worst result, % of goal"], TB.goal.map(r => [r.portfolio, esc(r.return_assumption) + " (" + f0(r.assumed_return_pct) + "%)", f1(r.pct_windows_goal_met), f1(r.worst_final_as_pct_of_goal)]), 2, i => /PFW/.test(TB.goal[i].return_assumption))}
+      <p class="small muted">The planning rates were chosen on this same history, so these rates describe the past and are not a forecast.</p></div></section>
+      <section class="card"><h2>Why the plan does not rely on a market forecast</h2>
+      ${table(["Model", "Label taken from a feature, random split %", "Forward label, random split %", "Forward label, purged walk-forward %", "Majority baseline %"],
+        TB.regime.map(r => [r.model, f1(r.A_label_from_trailing_return_random_split_pct), f1(r.B_forward_label_random_split_pct), f1(r.C_forward_label_purged_walk_forward_pct), f1(r.majority_class_baseline_walk_forward_pct)]))}
+      <p class="small muted">Three-class market regime on ${SM.E.regime_weeks.toLocaleString("en-IN")} weekly observations. Tested honestly, a regime model is right less than half the time.</p></section>`;
+  }
+  function bindMarket() {
+    const run = () => {
+      const c = state.calc; c.cat = $("#c_cat").value; c.sip = Math.max(500, Number($("#c_sip").value) || 500);
+      c.years = Math.min(15, Math.max(3, Math.round(Number($("#c_years").value) || 10))); c.step = Math.min(20, Math.max(0, Number($("#c_step").value) || 0));
+      const o = E.rollingOutcomes(c.cat, c.years, c.sip, c.step / 100);
+      $("#calcOut").innerHTML = `<h2>${c.years}-year outcomes, ${o.windows} starting months</h2>` +
+        hbar([{ label: "Put in", value: o.invested, text: E.inrWords(o.invested), color: C.s5 }, { label: "Worst", value: o.worst, text: E.inrWords(o.worst), color: C.s2 },
+          { label: "Poor (1 in 20)", value: o.low, text: E.inrWords(o.low), color: C.s2 }, { label: "Middle", value: o.mid, text: E.inrWords(o.mid), color: C.s1 },
+          { label: "Good (1 in 20)", value: o.high, text: E.inrWords(o.high), color: C.s3 }, { label: "Best", value: o.best, text: E.inrWords(o.best), color: C.s3 }], { lw: 130, rw: 120, label: "SIP outcomes" }) +
+        `<p class="small muted">${c.cat} portfolio, yearly rebalancing. Windows overlap, so they are not independent trials.</p>`;
+    };
+    ["c_cat", "c_sip", "c_years", "c_step"].forEach(id => $("#" + id).addEventListener("input", run)); run();
+  }
+
+  // ================================================================== EVALUATION (RO4 offline)
+  function viewEvaluation() {
+    const scr = TB.screeners.filter(r => r.questions_asked < 7), ad = scr.find(r => r.screener.indexOf("at most 4") > 0);
+    const pl = E.vignettePlan("V1"), fk = {}; TB.readability.forEach(r => fk[r.register] = r);
+    return `<section class="card"><h1>Evaluation across literacy levels</h1><p class="lead">Objective 4 is tested in two stages: an offline evaluation, complete below, and a participant study, which fills the Researcher tab as people take part.</p>
+      <div class="note"><b>Participant results are not shown here.</b> They appear in the Researcher tab only once real people have completed the study.</div></section>
+      <section class="grid g2"><div class="card"><h2>Placing a user with four questions</h2><p class="muted">Agreement with the full seven-item tier (weighted kappa). Trained on the 2021 survey, tested on 2024.</p>
+      ${hbar(scr.map(r => ({ label: r.screener.replace(/\s*\(.*\)|:.*$/g, "").replace("Adaptive optimal tree", "Adaptive tree") + " (" + f1(r.questions_asked) + " q)", value: r.quadratic_weighted_kappa, text: f2(r.quadratic_weighted_kappa) + ", " + f0(r.accuracy) + "% exact",
+        color: /Adaptive/.test(r.screener) ? C.s2 : /Self|Profile/.test(r.screener) ? C.s5 : C.s1 })), { max: 1, lw: 250, rw: 130, label: "Screener agreement" })}
+      <p class="small muted">The adaptive tree asks ${f1(ad.questions_asked)} questions on average and never confuses Low with High.</p></div>
+      <div class="card"><h2>Reading load delivered to each tier</h2><p class="muted">School grade needed to read the plan (Flesch-Kincaid), adaptive against one technical text for everyone.</p>
+      ${vbars(TB.load.map(r => r.tier + " literacy"), [{ name: "Adaptive", color: C.s1, values: TB.load.map(r => r.adaptive_fk_grade) }, { name: "One technical text", color: C.s5, values: TB.load.map(r => r.one_size_expert_fk_grade) }], { labels: true, max: 18 })}
+      <p class="small muted">All three reading levels state the same decision facts in 100% of ${SM.C.n_personas.toLocaleString("en-IN")} test profiles.</p></div></section>
+      <section class="card"><h2>One plan, three reading levels</h2><p class="muted">The plan for the sample user ${esc(ASHA.name)}, exactly as the app writes it.</p>
+      <div class="grid g3">${K.REGISTERS.map(r => `<div class="stack"><div class="row"><span class="pill info">${r === "Plain" ? "Simple" : r === "Guided" ? "Standard" : "Detailed"}</span><span class="small muted">grade ${f1(fk[r].fk_grade_mean)}, ${f1(fk[r].jargon_per_100w_mean)} finance terms per 100 words</span></div><div class="plan-text small">${esc(E.explain(pl, r))}</div></div>`).join("")}</div></section>
+      <section class="grid g2"><div class="card"><h2>Sample size for the study</h2><p class="muted">Power to detect that the adaptive display helps lower tiers more (simulation).</p>
+      ${lines(TB.power.map(r => String(r.n_per_tier)), [{ name: "Tier by interface interaction", color: C.s1, values: TB.power.map(r => 100 * r.power_tier_x_interface_interaction) }, { name: "Gain within the Low tier", color: C.s2, values: TB.power.map(r => 100 * r.power_adaptive_gain_in_low_tier) }],
+        { min: 0, max: 100, ticks: [0, 25, 50, 75, 100], dots: true, fmt: v => f0(v) + "%", ref: 80, refLabel: "80% power", xTitle: "Participants per literacy tier", label: "Power curve" })}
+      <p class="small muted">Target: ${CONFIG.TARGET_PER_TIER} per tier, ${CONFIG.TARGET_PER_TIER * 3} in total.</p></div>
+      <div class="card"><h2>Colour contrast</h2><p class="muted">WCAG contrast of the text and background pairs on this page, measured live in the theme you are viewing. AA needs 4.5:1.</p>
+      ${table(["Element", "Ratio", "AA (4.5)", "AAA (7)"], contrastAudit().map(r => [esc(r[0]), f2(r[1]) + ":1", r[1] >= 4.5 ? "pass" : "FAIL", r[1] >= 7 ? "pass" : "below"]))}</div></section>
+      <section class="card"><h2>Hypotheses the participant study tests</h2>
+      ${table(["", "Hypothesis", "Measure"], [["H1", "Mean usability score exceeds 68 in every literacy tier.", "System Usability Scale"], ["H2", "Usability in the Low and High tiers is equivalent within 10 points.", "Equivalence test"],
+        ["H3", "Understanding is higher with the adaptive display than with the standard one.", "Six-question comprehension score"], ["H4", "The gain is larger in lower tiers, so the literacy gap narrows.", "Tier by interface interaction"],
+        ["H5", "Trust, privacy assurance and explanation quality predict intention to use.", "Acceptance model"]], 9)}</section>`;
+  }
+
+  function contrastAudit() {
+    const cs = getComputedStyle(document.documentElement), tok = n => cs.getPropertyValue(n).trim();
+    const lin = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+    const lum = h => { h = h.replace("#", ""); return 0.2126 * lin(parseInt(h.slice(0, 2), 16)) + 0.7152 * lin(parseInt(h.slice(2, 4), 16)) + 0.0722 * lin(parseInt(h.slice(4, 6), 16)); };
+    const ratio = (a, b) => { const x = lum(tok(a)), y = lum(tok(b)); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    return [["Body text on page", "--ink", "--bg"], ["Body text on card", "--ink", "--surface"], ["Plan text on panel", "--ink", "--sunk"], ["Secondary text on card", "--muted", "--surface"],
+      ["Secondary text on page", "--muted", "--bg"], ["Button label", "--accent-ink", "--accent"], ["Link on card", "--accent", "--surface"], ["Caution note", "--mark", "--mark-soft"],
+      ["Success note", "--good", "--good-soft"], ["Alert note", "--crit", "--crit-soft"]].map(p => [p[0], ratio(p[1], p[2])]);
+  }
+
+  // ================================================================== STUDY (RO4 participant flow)
+  const STEPS = ["consent", "background", "screener", "b1read", "b1quiz", "b2read", "b2quiz", "profile", "privacy", "ownplan", "questions", "litrest", "done"];
+  const STEP_NAMES = ["Consent", "About you", "Money questions", "Sample plan 1", "Sample plan 2", "Your plan", "Your views", "Finish"];
+  const STEP_GROUP = { consent: 0, background: 1, screener: 2, b1read: 3, b1quiz: 3, b2read: 4, b2quiz: 4, profile: 5, privacy: 5, ownplan: 5, questions: 6, litrest: 7, done: 7 };
+  let st = null;
+  function newStudy() { st = { step: "consent", rec: { participant_id: "P" + Math.random().toString(16).slice(2, 11), app_version: APP_VERSION }, lit: {}, node: DATA.screener, asked: 0, reg: {}, sw: {}, t0: Date.now() }; }
+  function go(step) { st.step = step; st.t0 = Date.now(); render(); window.scrollTo(0, 0); }
+  const secs = () => Math.round((Date.now() - st.t0) / 100) / 10;
+  function viewStudy() {
+    if (!st) newStudy();
+    const g = STEP_GROUP[st.step];
+    const chips = `<div class="steps">${STEP_NAMES.map((n, i) => `<span class="${i === g ? "on" : i < g ? "done" : ""}">${i + 1}. ${n}</span>`).join("")}</div>`;
+    return `<section class="card">${chips}${studyBody()}</section>`;
+  }
+  function blockPlanHtml(b) {
+    const [iface, vkey] = st.blocks[b - 1], key = "b" + b;
+    if (!st.reg[key]) st.reg[key] = iface === "Standard" ? "Expert" : K.TIER_TO_REGISTER[st.tier];
+    return planHtml(E.vignettePlan(vkey), iface, st.reg[key], key);
+  }
+  function studyBody() {
+    const s = st.step, BG = INS.BACKGROUND;
+    if (s === "consent") return `<h1>Take part in the study</h1><p class="lead">This study is part of a PhD on making financial planning tools easy for everyone. It takes about 15 minutes.</p>
+      <div class="stack"><p><b>What you will do.</b> Answer a few questions about yourself and about money topics, read two short sample plans and answer questions about them, receive your own plan, and tell us what you thought of the app.</p>
+      <p><b>Your data.</b> We do not ask for your name, phone number, PAN, Aadhaar or bank details. Your answers are stored under a random code and used only for research. ${CONFIG.RESPONSE_ENDPOINT ? "When you finish, your answers are sent to the researcher's secure sheet." : "When you finish, your answers are saved on this device for the researcher to collect."} You can stop at any time by closing the page; nothing is saved until the last step.</p>
+      <p><b>Not advice.</b> The app gives general education, not investment advice. It is not a SEBI-registered adviser.</p></div>
+      <label class="opt" for="agree"><input type="checkbox" id="agree"><span>I am 18 or older, I have read the information above and I agree to take part.</span></label>
+      <div><button class="primary" id="next" disabled>Start</button></div>`;
+    if (s === "background") return `<h2>About you</h2>${radio("age_group", INS.PROFILE.age_group.text, INS.PROFILE.age_group.options.map(o => o[0]), true)}
+      ${radio("gender", "Gender", BG.gender, true)}${radio("education", "Highest education completed", BG.education, true)}
+      ${radio("self_rated_knowledge", "How would you rate your overall knowledge of money matters? (1 = very low, 7 = very high)", BG.self_rated_knowledge, true)}
+      ${radio("uses_upi_or_mobile_banking", "How often do you use UPI or mobile banking?", BG.uses_upi_or_mobile_banking, true)}
+      ${radio("language_comfort_english", "How comfortable are you reading English?", BG.language_comfort_english, true)}<p class="err" id="err"></p><div><button class="primary" id="next">Continue</button></div>`;
+    if (s === "screener") { const q = INS.LITERACY[st.node.item]; return `<h2>A few quick money questions</h2><p class="muted">There is no pass or fail. If you are not sure, choose "Don't know". It helps us explain things the right way.</p>
+      ${radio("scr", q.text, q.options)}<p class="err" id="err"></p><div><button class="primary" id="next">Next</button></div>`; }
+    if (s === "b1read" || s === "b2read") { const b = s === "b1read" ? 1 : 2, v = INS.VIGNETTES[st.blocks[b - 1][1]];
+      return `<h2>Sample plan ${b} of 2</h2><div class="note good"><b>Meet ${esc(v.name)}.</b> ${esc(v.story)}</div>
+      <p>Below is the plan the app prepared for ${esc(v.name)}. Read it as if it were written for you, then answer a few questions about it.</p>
+      <div class="stack" id="blockPlan">${blockPlanHtml(b)}</div><div><button class="primary" id="next">I have read it. Go to the questions</button></div>`; }
+    if (s === "b1quiz" || s === "b2quiz") { const b = s === "b1quiz" ? 1 : 2, vkey = st.blocks[b - 1][1], v = INS.VIGNETTES[vkey], pl = E.vignettePlan(vkey);
+      const quiz = E.comprehensionQuiz(pl, v.name);
+      return `<h2>Questions about ${esc(v.name)}'s plan</h2><details><summary>Show ${esc(v.name)}'s plan again</summary><div class="plan-text" style="margin-top:8px">${esc(E.explain(pl, st.reg["b" + b]))}</div></details>
+      ${quiz.map(q => radio(q.id, q.text, q.options)).join("")}${radio("seq", INS.SEQ_TEXT, ["1", "2", "3", "4", "5", "6", "7"], true)}<p class="err" id="err"></p><div><button class="primary" id="next">Continue</button></div>`; }
+    if (s === "profile") return `<h2>Now, your own plan</h2><p class="muted">Choose the closest answer. Pick "Not sure" where it is offered if you do not know.</p>
+      ${INS.PROFILE_ORDER.filter(k => k !== "age_group").map(k => radio(k, INS.PROFILE[k].text, INS.PROFILE[k].options.map(o => o[0]), INS.PROFILE[k].options.every(o => o[0].length <= 22))).join("")}
+      <label class="f">Goal amount in today's rupees (leave 0 to plan for retirement at 60)<input type="number" id="s_goalAmt" min="0" step="50000" value="0"></label>
+      <label class="f">Years until you need it<input type="number" id="s_goalYears" min="1" max="40" value="10"></label><p class="err" id="err"></p><div><button class="primary" id="next">See my plan</button></div>`;
+    if (s === "privacy") { const plain = st.tier === "Low";
+      return `<h2>Your privacy choice</h2><p>Your plan is worked out on this device. The real app would let you choose what, if anything, leaves it.</p>
+      ${radio("privacy_choice", "What would you choose?", plain ? ["Keep everything on this device. Nothing is shared.", "Share only my plan type, and mix it up first: about 1 in 5 shared answers is changed on purpose, so nobody can be sure what mine was.", "Share all my answers, without my name, to help research."]
+        : ["On-device only: no data leaves this device.", "Share only my plan category with local differential privacy (randomised response, epsilon = 2; about 21% of reports are deliberately altered).", "Share my full anonymised profile for research."])}
+      <p class="small muted">In this study your answers are saved under a random code as described on the first page. This question asks what you would choose in the real app.</p><p class="err" id="err"></p><div><button class="primary" id="next">Continue</button></div>`; }
+    if (s === "ownplan") { if (!st.reg.own) st.reg.own = K.TIER_TO_REGISTER[st.tier];
+      return `<h2>Your plan</h2><div class="stack" id="blockPlan">${planHtml(st.plan, "Adaptive", st.reg.own, "own")}</div>
+      <p class="small muted">General education only, not investment advice. Past returns come from Indian mutual fund NAV history and do not predict future returns.</p><div><button class="primary" id="next">Continue to the last questions</button></div>`; }
+    if (s === "questions") return `<h2>What did you think of the app?</h2><h3>Using the app</h3>
+      ${INS.SUS.map((t, i) => radio("sus_" + (i + 1), t, ["1 - Strongly disagree", "2", "3", "4", "5 - Strongly agree"], true)).join("")}
+      <h3>Your impression</h3><p class="muted">For each pair, choose the point that best matches your impression (1 = left word, 7 = right word).</p>
+      ${INS.UEQ_S.map((p, i) => radio("ueq_" + (i + 1), p[0] + "  ...  " + p[1], ["1", "2", "3", "4", "5", "6", "7"], true)).join("")}
+      <h3>The plan, trust and privacy</h3>
+      ${Object.keys(INS.CONSTRUCTS).map(k => INS.CONSTRUCTS[k].map((t, i) => radio(k + "_" + (i + 1), t, ["1 - Strongly disagree", "2", "3", "4 - Neither", "5", "6", "7 - Strongly agree"], true)).join("")).join("")}
+      <label class="f">Anything that confused you, or that you would change? (optional)<textarea id="comment" rows="3"></textarea></label><p class="err" id="err"></p><div><button class="primary" id="next">Continue</button></div>`;
+    if (s === "litrest") return `<h2>Last step: a few more money questions</h2>
+      ${Object.keys(INS.LITERACY).filter(k => !(k in st.lit)).map(k => radio("lit_" + k.split(" ")[0], INS.LITERACY[k].text, INS.LITERACY[k].options)).join("")}<p class="err" id="err"></p><div><button class="primary" id="next">Finish</button></div>`;
+    return `<h1>Thank you</h1><div class="note good">Your answers were saved under the code <b>${esc(st.rec.participant_id)}</b>. Quote this code if you ever want your answers removed.</div>
+      <p class="muted" id="saveStatus">${esc(st.saveStatus || "")}</p>
+      <div class="row"><button id="dlMine">Download my answers</button><button id="copyMine">Copy my answers</button><button id="again">Start again</button></div><p class="small muted" id="copyMsg"></p>`;
+  }
+  function bindStudy() {
+    const root = $("#view"), s = st.step, err = m => { const e = $("#err"); if (e) e.textContent = m; };
+    const need = names => { if (missing(root, names)) { err("Please answer every question. The first one you missed is outlined."); return false; } return true; };
+    const next = $("#next");
+    if (s === "consent") { $("#agree").addEventListener("change", e => { next.disabled = !e.target.checked; }); next.addEventListener("click", () => { st.rec.consent = 1; go("background"); }); }
+    if (s === "background") next.addEventListener("click", () => {
+      const names = ["age_group", "gender", "education", "self_rated_knowledge", "uses_upi_or_mobile_banking", "language_comfort_english"]; if (!need(names)) return;
+      const BG = INS.BACKGROUND; st.rec.age_group = INS.PROFILE.age_group.options[picked(root, "age_group")][1];
+      st.rec.gender = BG.gender[picked(root, "gender")]; st.rec.education = BG.education[picked(root, "education")]; st.rec.self_rated_knowledge = picked(root, "self_rated_knowledge") + 1;
+      st.rec.uses_upi_or_mobile_banking = BG.uses_upi_or_mobile_banking[picked(root, "uses_upi_or_mobile_banking")]; st.rec.language_comfort_english = BG.language_comfort_english[picked(root, "language_comfort_english")];
+      go("screener");
+    });
+    if (s === "screener") next.addEventListener("click", () => {
+      if (!need(["scr"])) return; const item = st.node.item, right = picked(root, "scr") === INS.LITERACY[item].correct ? 1 : 0;
+      st.lit[item] = right; st.asked++; st.node = right ? st.node.right : st.node.wrong;
+      if (st.node.item) return go("screener");
+      st.tier = st.node.tier; st.rec.screener_tier = st.tier; st.rec.screener_questions_asked = st.asked;
+      const cell = Math.floor(Math.random() * INS.CELLS.length), first = INS.CELLS[cell]; st.rec.cell = cell;
+      st.blocks = [first, [first[0] === "Adaptive" ? "Standard" : "Adaptive", first[1] === "V1" ? "V2" : "V1"]]; go("b1read");
+    });
+    if (s === "b1read" || s === "b2read") { const b = s === "b1read" ? 1 : 2; next.addEventListener("click", () => {
+      st.rec["b" + b + "_interface"] = st.blocks[b - 1][0]; st.rec["b" + b + "_vignette"] = st.blocks[b - 1][1]; st.rec["b" + b + "_register_shown"] = st.reg["b" + b];
+      st.rec["b" + b + "_read_seconds"] = secs(); st.rec["b" + b + "_register_switches"] = st.sw["b" + b] || 0; go("b" + b + "quiz"); }); }
+    if (s === "b1quiz" || s === "b2quiz") { const b = s === "b1quiz" ? 1 : 2; next.addEventListener("click", () => {
+      const vkey = st.blocks[b - 1][1], quiz = E.comprehensionQuiz(E.vignettePlan(vkey), INS.VIGNETTES[vkey].name); if (!need(quiz.map(q => q.id).concat(["seq"]))) return;
+      let score = 0; quiz.forEach(q => { const r = picked(root, q.id) === q.correct ? 1 : 0; st.rec["b" + b + "_" + q.id] = r; score += r; });
+      st.rec["b" + b + "_comprehension"] = score; st.rec["b" + b + "_seq"] = picked(root, "seq") + 1; st.rec["b" + b + "_quiz_seconds"] = secs(); go(b === 1 ? "b2read" : "profile"); }); }
+    if (s === "profile") next.addEventListener("click", () => {
+      const names = INS.PROFILE_ORDER.filter(k => k !== "age_group"); if (!need(names)) return;
+      const codes = { age_group: st.rec.age_group }; names.forEach(k => { codes[k] = INS.PROFILE[k].options[picked(root, k)][1]; });
+      const amt = Number($("#s_goalAmt").value) || 0, yrs = Math.min(40, Math.max(1, Number($("#s_goalYears").value) || 10));
+      st.codes = codes; st.plan = E.plan(codes, amt > 0 ? amt : null, amt > 0 ? yrs : null); K.ATTRS.forEach(a => { st.rec["own_" + a.key] = codes[a.key]; }); go("privacy");
+    });
+    if (s === "privacy") next.addEventListener("click", () => { if (!need(["privacy_choice"])) return; st.rec.privacy_choice = ["device", "noisy", "full"][picked(root, "privacy_choice")]; go("ownplan"); });
+    if (s === "ownplan") next.addEventListener("click", () => { st.rec.own_risk_cat = st.plan.risk_cat; st.rec.own_register_final = st.reg.own; st.rec.own_register_switches = st.sw.own || 0; st.rec.own_read_seconds = secs(); go("questions"); });
+    if (s === "questions") next.addEventListener("click", () => {
+      const names = INS.SUS.map((t, i) => "sus_" + (i + 1)).concat(INS.UEQ_S.map((t, i) => "ueq_" + (i + 1)));
+      Object.keys(INS.CONSTRUCTS).forEach(k => INS.CONSTRUCTS[k].forEach((t, i) => names.push(k + "_" + (i + 1)))); if (!need(names)) return;
+      names.forEach(n => { st.rec[n] = picked(root, n) + 1; }); st.rec.comment = ($("#comment").value || "").replace(/\s+/g, " ").trim(); go("litrest");
+    });
+    if (s === "litrest") next.addEventListener("click", () => {
+      const rest = Object.keys(INS.LITERACY).filter(k => !(k in st.lit)); if (!need(rest.map(k => "lit_" + k.split(" ")[0]))) return;
+      rest.forEach(k => { st.lit[k] = picked(root, "lit_" + k.split(" ")[0]) === INS.LITERACY[k].correct ? 1 : 0; });
+      let score = 0; Object.keys(INS.LITERACY).forEach(k => { st.rec["lit_" + k.split(" ")[0]] = st.lit[k]; score += st.lit[k]; });
+      st.rec.lit_score_full7 = score; st.rec.lit_tier_full7 = E.tierFromScore(score); st.rec.timestamp_utc = new Date().toISOString().slice(0, 19) + "+00:00";
+      const all = localResponses(); all.push(st.rec); const kept = store.set("pfw_responses", all);
+      st.saveStatus = kept ? "Saved on this device." : "This browser would not store the answers. Please use Download or Copy below and send the file to the researcher.";
+      postResponse(st.rec).then(r => { if (r === "sent") st.saveStatus += " Sent to the researcher."; if (r === "failed") st.saveStatus += " Sending to the researcher failed; please use Download or Copy below."; const e = $("#saveStatus"); if (e) e.textContent = st.saveStatus; });
+      go("done");
+    });
+    if (s === "done") {
+      const txt = JSON.stringify(st.rec, null, 1);
+      $("#dlMine").addEventListener("click", () => saveFile("pfw_response_" + st.rec.participant_id + ".json", txt, "application/json", $("#copyMsg")));
+      $("#copyMine").addEventListener("click", () => copyText(txt, $("#copyMsg")));
+      $("#again").addEventListener("click", () => { st = null; render(); });
+    }
+  }
+  async function postResponse(rec) {
+    if (!CONFIG.RESPONSE_ENDPOINT) return "none";
+    try { await fetch(CONFIG.RESPONSE_ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(rec) }); return "sent"; }
+    catch (e) { return "failed"; }
+  }
+  async function saveFile(name, text, mime, msgEl) {
+    try { if (window.claude && window.claude.use) { const d = await window.claude.use("downloads"); if (d) { await d.save({ filename: name, data: text }); if (msgEl) msgEl.textContent = "Saved " + name + "."; return; } } } catch (e) { /* fall through */ }
+    try { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: mime })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      if (msgEl) msgEl.textContent = "If no file appeared, use Copy instead."; } catch (e) { if (msgEl) msgEl.textContent = "Download is not available here. Use Copy instead."; }
+  }
+  function copyText(text, msgEl) {
+    const done = ok => { if (msgEl) msgEl.textContent = ok ? "Copied." : "Copy was blocked. Select the text in the box below and copy it by hand."; };
+    try { navigator.clipboard.writeText(text).then(() => done(true), () => done(false)); } catch (e) { done(false); }
+  }
+
+  // ================================================================== RESEARCHER DASHBOARD (RO4 results)
+  const COLS = INS.COLUMNS;
+  function toCsv(recs) { const q = v => { v = v == null ? "" : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }; return [COLS.join(",")].concat(recs.map(r => COLS.map(c => q(r[c])).join(","))).join("\n"); }
+  function parseCsv(text) {
+    const rows = []; let row = [], cur = "", inq = false;
+    for (let i = 0; i < text.length; i++) { const ch = text[i];
+      if (inq) { if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else inq = false; } else cur += ch; }
+      else if (ch === '"') inq = true; else if (ch === ",") { row.push(cur); cur = ""; } else if (ch === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; } else if (ch !== "\r") cur += ch; }
+    if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+    const head = rows.shift() || []; return rows.filter(r => r.length > 1).map(r => { const o = {}; head.forEach((h, i) => { const v = r[i]; o[h] = h !== "participant_id" && h !== "comment" && /^-?\d+(\.\d+)?$/.test(v || "") ? Number(v) : v; }); return o; });
+  }
+  function simulate(n) {
+    const r = rng(7), norm = () => Math.sqrt(-2 * Math.log(1 - r())) * Math.cos(2 * Math.PI * r()), clip = (v, a, b) => Math.min(b, Math.max(a, Math.round(v)));
+    const pItem = { Low: [.45, .25, .08, .12, .15, .45, .12], Medium: [.8, .65, .2, .28, .38, .8, .45], High: [.95, .92, .6, .55, .7, .93, .9] }, out = [], items = Object.keys(INS.LITERACY);
+    for (let i = 0; i < n; i++) {
+      const u = r(), latent = u < .36 ? "Low" : u < .72 ? "Medium" : "High", rec = { participant_id: "SIM" + String(i).padStart(4, "0"), timestamp_utc: "SIMULATED", app_version: "SIMULATED", consent: 1, cell: i % 4 };
+      let s7 = 0; items.forEach((k, j) => { const v = r() < pItem[latent][j] ? 1 : 0; rec["lit_" + k.split(" ")[0]] = v; s7 += v; });
+      const tier = E.tierFromScore(s7); rec.lit_score_full7 = s7; rec.lit_tier_full7 = tier; rec.screener_tier = r() < .84 ? tier : K.TIERS[Math.floor(r() * 3)]; rec.screener_questions_asked = 2 + Math.floor(r() * 3);
+      rec.age_group = 1 + Math.floor(r() * 6); rec.gender = r() < .5 ? "Woman" : "Man"; rec.education = INS.BACKGROUND.education[Math.floor(r() * 4)]; rec.self_rated_knowledge = 2 + Math.floor(r() * 6);
+      const first = INS.CELLS[i % 4], blocks = [first, [first[0] === "Adaptive" ? "Standard" : "Adaptive", first[1] === "V1" ? "V2" : "V1"]];
+      const ability = { Low: 2.4, Medium: 3.6, High: 4.8 }[tier] + norm() * .8, gain = { Low: 1.0, Medium: .5, High: 0 }[tier];
+      blocks.forEach((b, j) => { const mu = ability + (b[0] === "Adaptive" ? gain : 0), k = "b" + (j + 1);
+        rec[k + "_interface"] = b[0]; rec[k + "_vignette"] = b[1]; rec[k + "_comprehension"] = clip(mu + norm() * .9, 0, 6); rec[k + "_seq"] = clip(4.2 + .5 * (mu - 3.5) + norm(), 1, 7); rec[k + "_read_seconds"] = Math.round(Math.exp(4.2 + .4 * norm())); });
+      rec.privacy_choice = (v => v < .5 ? "device" : v < .8 ? "noisy" : "full")(r()); rec.own_register_final = K.TIER_TO_REGISTER[tier];
+      const base = .55 + .9 * norm(); for (let j = 1; j <= 10; j++) rec["sus_" + j] = clip(3 + (j % 2 ? base : -base) + .8 * norm(), 1, 5);
+      for (let j = 1; j <= 8; j++) rec["ueq_" + j] = clip(4.8 + .8 * base + norm(), 1, 7);
+      const f = base + .5 * norm(); Object.keys(INS.CONSTRUCTS).forEach(k => INS.CONSTRUCTS[k].forEach((t, j) => { rec[k + "_" + (j + 1)] = clip(4.6 + .9 * f + .9 * norm(), 1, 7); }));
+      out.push(rec);
+    }
+    return out;
+  }
+  function derive(r) {
+    const num = k => Number(r[k]), d = { tier: r.lit_tier_full7, sim: String(r.participant_id).indexOf("SIM") === 0 };
+    d.sus = E.susScore(Array.from({ length: 10 }, (x, i) => num("sus_" + (i + 1))));
+    const u = Array.from({ length: 8 }, (x, i) => num("ueq_" + (i + 1)) - 4); d.prag = E.mean(u.slice(0, 4)); d.hed = E.mean(u.slice(4));
+    Object.keys(INS.CONSTRUCTS).forEach(k => { d[k] = E.mean(INS.CONSTRUCTS[k].map((t, i) => num(k + "_" + (i + 1)))); });
+    [1, 2].forEach(b => { d[r["b" + b + "_interface"] === "Adaptive" ? "adaptive" : "standard"] = num("b" + b + "_comprehension"); });
+    d.gain = d.adaptive - d.standard; d.privacy = r.privacy_choice; d.agree = r.screener_tier === r.lit_tier_full7 ? 1 : 0; return d;
+  }
+  function viewResearcher() {
+    if (!state.unlocked) return `<section class="card"><h1>Researcher dashboard</h1><p class="lead">Live results of the participant study: sample by literacy tier, usability, understanding, trust and privacy choices.</p>
+      <label class="f" style="max-width:320px">Access code<input type="password" id="code" autocomplete="off"></label><p class="err" id="err"></p><div><button class="primary" id="unlock">Open dashboard</button></div>
+      <p class="small muted">The code keeps participants out of this tab. It is not real security: anyone who reads the page source can find it. No participant data is stored on the web page itself.</p></section>`;
+    const local = localResponses(), recs = local.concat(state.imported, state.sim), hasSim = state.sim.length > 0, D = recs.map(derive), byT = t => D.filter(d => d.tier === t), tgt = CONFIG.TARGET_PER_TIER;
+    const stamp = hasSim ? `<span class="simflag">SIMULATED DATA. NOT RESEARCH RESULTS.</span>` : "", cardCls = hasSim ? "card sim" : "card";
+    const ms = (a, dp) => a.length ? (dp === 2 ? f2 : f1)(E.mean(a)) : "", sdv = a => a.length > 1 ? f1(E.sd(a)) : "";
+    const real = local.length + state.imported.length;
+    let body = "";
+    if (!recs.length) body = `<section class="card"><h2>No responses yet</h2><p class="muted">Results appear here as soon as participants finish the study on this device, or when you import the response file from your sheet.</p></section>`;
+    else {
+      const susRows = K.TIERS.map(t => { const a = byT(t).map(d => d.sus), ci = a.length > 1 ? E.ci95(a) : [NaN, NaN]; return { label: t + " literacy", mean: a.length ? E.mean(a) : NaN, lo: ci[0], hi: ci[1], color: TIER_COL[t], text: a.length ? f1(E.mean(a)) + " (n=" + a.length + ")" : "" }; });
+      const comp = K.TIERS.map(t => { const x = byT(t).filter(d => isFinite(d.gain)), g = x.map(d => d.gain), tt = g.length > 2 && E.sd(g) > 0 ? E.oneSampleT(g, 0) : null, ci = g.length > 1 ? E.ci95(g) : [NaN, NaN];
+        return { t, n: g.length, std: x.length ? E.mean(x.map(d => d.standard)) : NaN, ada: x.length ? E.mean(x.map(d => d.adaptive)) : NaN, gain: g.length ? E.mean(g) : NaN, lo: ci[0], hi: ci[1], p: tt ? tt.p : NaN }; });
+      const gapS = comp[2].std - comp[0].std, gapA = comp[2].ada - comp[0].ada, okComp = comp.every(c => c.n > 0);
+      const alpha = (cols, rev) => { const rows = recs.map(r => cols.map((c, i) => rev && i % 2 ? 6 - Number(r[c]) : Number(r[c]))).filter(r => r.every(isFinite)); return rows.length > 2 ? f2(E.cronbach(rows)) : "needs 3+"; };
+      body = `<section class="grid g4">${tile(recs.length, "responses in view" + (hasSim ? " (simulated)" : ""))}${tile(f1(E.mean(D.map(d => d.sus))), "mean usability score (SUS, 0 to 100)")}
+        ${tile(okComp ? (E.mean(D.filter(d => isFinite(d.gain)).map(d => d.gain)) >= 0 ? "+" : "") + f2(E.mean(D.filter(d => isFinite(d.gain)).map(d => d.gain))) : "n/a", "mean gain in understanding, adaptive minus standard (of 6)")}
+        ${tile(f0(100 * E.mean(D.map(d => d.agree))) + "%", "screener tier matches the full seven-item tier")}</section>
+        <section class="${cardCls}"><div class="row"><h2>Recruitment against target</h2>${stamp}</div>
+        ${K.TIERS.map(t => { const n = byT(t).length; return `<div class="row" style="flex-wrap:nowrap"><span style="width:130px">${t} literacy</span><div class="bar" style="flex:1"><i style="width:${Math.min(100, 100 * n / tgt)}%"></i></div><span style="width:80px;text-align:right">${n} / ${tgt}</span></div>`; }).join("")}</section>
+        <section class="grid g2"><div class="${cardCls}"><div class="row"><h2>Usability by literacy tier</h2>${stamp}</div><p class="muted">Mean SUS with 95% confidence interval. The dashed line is 68, the average product. Tests H1 and H2.</p>
+        ${dotci(susRows, { min: 30, max: 100, ref: 68, label: "SUS by tier" })}
+        ${table(["Tier", "n", "Mean", "SD", "At or above 68 %"], K.TIERS.map(t => { const a = byT(t).map(d => d.sus); return [t, a.length, ms(a), sdv(a), a.length ? f0(100 * a.filter(v => v >= 68).length / a.length) : ""]; }))}</div>
+        <div class="${cardCls}"><div class="row"><h2>Understanding: adaptive against standard</h2>${stamp}</div><p class="muted">Comprehension score out of 6 on the sample plans. Tests H3 and H4.</p>
+        ${okComp ? vbars(K.TIERS.map(t => t + " literacy"), [{ name: "Standard display", color: C.s5, values: comp.map(c => c.std) }, { name: "Adaptive display", color: C.s1, values: comp.map(c => c.ada) }], { max: 6.6, labels: false }) : `<p class="muted">Needs at least one response in every tier.</p>`}
+        ${table(["Tier", "n", "Standard", "Adaptive", "Gain", "95% CI", "p"], comp.map(c => [c.t, c.n, isFinite(c.std) ? f2(c.std) : "", isFinite(c.ada) ? f2(c.ada) : "", isFinite(c.gain) ? f2(c.gain) : "", isFinite(c.lo) ? f2(c.lo) + " to " + f2(c.hi) : "", isFinite(c.p) ? (c.p < 0.001 ? "<0.001" : c.p.toFixed(3)) : ""]))}
+        ${okComp ? `<p class="small muted">Literacy gap (High minus Low): ${f2(gapS)} with the standard display, ${f2(gapA)} with the adaptive one. Change: ${f2(gapS - gapA)} points.</p>` : ""}</div></section>
+        <section class="grid g2"><div class="${cardCls}"><div class="row"><h2>Experience, trust and acceptance</h2>${stamp}</div>
+        ${table(["Measure", "Low", "Medium", "High"], [["UEQ-S pragmatic quality (-3 to +3)", "prag"], ["UEQ-S hedonic quality (-3 to +3)", "hed"], ["Perceived usefulness (1 to 7)", "PU"], ["Trust (1 to 7)", "TRUST"], ["Privacy assurance (1 to 7)", "PRIV"], ["Explanation satisfaction (1 to 7)", "EXPL"], ["Intention to use (1 to 7)", "BI"]]
+          .map(m => [m[0]].concat(K.TIERS.map(t => ms(byT(t).map(d => d[m[1]]), 2)))))}</div>
+        <div class="${cardCls}"><div class="row"><h2>Privacy choice and scale reliability</h2>${stamp}</div>
+        ${table(["Tier", "On-device only %", "Noised plan type %", "Full profile %"], K.TIERS.map(t => { const a = byT(t); return [t].concat(["device", "noisy", "full"].map(k => a.length ? f0(100 * a.filter(d => d.privacy === k).length / a.length) : "")); }))}
+        ${table(["Scale", "Cronbach's alpha"], [["SUS (10 items)", alpha(Array.from({ length: 10 }, (x, i) => "sus_" + (i + 1)), true)], ["UEQ-S pragmatic", alpha(["ueq_1", "ueq_2", "ueq_3", "ueq_4"])], ["UEQ-S hedonic", alpha(["ueq_5", "ueq_6", "ueq_7", "ueq_8"])]]
+          .concat(Object.keys(INS.CONSTRUCTS).map(k => [k, alpha(INS.CONSTRUCTS[k].map((t, i) => k + "_" + (i + 1)))])))}</div></section>`;
+    }
+    return `<section class="card"><h1>Researcher dashboard</h1>
+      <div class="row"><span class="pill ${real ? "good" : "warn"}">${local.length} saved on this device</span><span class="pill info">${state.imported.length} imported</span>${hasSim ? `<span class="pill crit">${state.sim.length} simulated</span>` : ""}</div>
+      ${hasSim ? `<div class="note crit"><b>Simulated data is loaded.</b> These numbers are invented to show how the dashboard works. They are not findings and must not be reported.</div>` : ""}
+      <div class="row"><label class="btn" for="imp">Import responses (CSV or JSON)</label><input type="file" id="imp" accept=".csv,.json,text/csv,application/json" multiple style="position:absolute;left:-9999px">
+      <button id="exp">Export all as CSV</button><button id="cpy">Copy CSV</button>
+      ${hasSim ? `<button id="simOff">Remove simulated data</button>` : `<button id="simOn">Load simulated demo data</button>`}<button id="clr">Clear responses on this device</button></div>
+      <p class="small muted" id="rmsg">Export gives the file that <code>o4_user_study_analysis.py</code> reads for the full statistical analysis (mixed model, equivalence test, acceptance model). Simulated rows are never exported.</p>
+      <textarea id="csvBox" rows="3" readonly style="display:none" aria-label="CSV text"></textarea></section>${body}`;
+  }
+  function bindResearcher() {
+    if (!state.unlocked) { const tryIt = () => { if ($("#code").value === CONFIG.ADMIN_CODE) { state.unlocked = true; render(); } else $("#err").textContent = "That code is not right."; };
+      $("#unlock").addEventListener("click", tryIt); $("#code").addEventListener("keydown", e => { if (e.key === "Enter") tryIt(); }); return; }
+    const realCsv = () => toCsv(localResponses().concat(state.imported));
+    $("#exp").addEventListener("click", () => saveFile("responses.csv", realCsv(), "text/csv", $("#rmsg")));
+    $("#cpy").addEventListener("click", () => { const b = $("#csvBox"); b.style.display = "block"; b.value = realCsv(); copyText(b.value, $("#rmsg")); });
+    const on = $("#simOn"), off = $("#simOff");
+    if (on) on.addEventListener("click", () => { state.sim = simulate(180); render(); });
+    if (off) off.addEventListener("click", () => { state.sim = []; render(); });
+    $("#clr").addEventListener("click", e => { if (e.target.dataset.sure) { store.set("pfw_responses", []); render(); } else { e.target.dataset.sure = "1"; e.target.textContent = "Press again to delete them for good"; } });
+    $("#imp").addEventListener("change", ev => { const files = Array.from(ev.target.files || []); let left = files.length; if (!left) return;
+      files.forEach(f => { const rd = new FileReader(); rd.onload = () => { try { const t = String(rd.result); let recs = /^\s*[\[{]/.test(t) ? [].concat(JSON.parse(t)) : parseCsv(t);
+        recs = recs.filter(r => r && r.participant_id && String(r.participant_id).indexOf("SIM") !== 0); const seen = new Set(localResponses().concat(state.imported).map(r => String(r.participant_id)));
+        recs.forEach(r => { if (!seen.has(String(r.participant_id))) { state.imported.push(r); seen.add(String(r.participant_id)); } }); } catch (e) { /* skip unreadable file */ }
+        if (--left === 0) render(); }; rd.readAsText(f); }); });
+  }
+
+  // ================================================================== router
+  const ROUTES = [["home", "Overview", viewHome, null], ["plan", "My plan", viewPlan, bindPlan], ["privacy", "Privacy", viewPrivacy, bindPrivacy], ["patterns", "Patterns", viewPatterns, null],
+    ["market", "Market evidence", viewMarket, bindMarket], ["evaluation", "Evaluation", viewEvaluation, null], ["study", "Take part", viewStudy, bindStudy], ["researcher", "Researcher", viewResearcher, bindResearcher]];
+  function render() {
+    const h = (location.hash || "#home").slice(1), route = ROUTES.find(r => r[0] === h) || ROUTES[0];
+    $("#nav").innerHTML = ROUTES.map(r => `<a href="#${r[0]}" ${r === route ? 'aria-current="page"' : ""}>${r[1]}</a>`).join("");
+    $("#view").innerHTML = route[2]();
+    if (route[3]) route[3]();
+  }
+  document.addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-reg]");
+    if (b) { const key = b.dataset.key, reg = b.dataset.reg;
+      if (key === "plan") { state.register = reg; $("#planPanel").innerHTML = planPanel(); }
+      else if (st) { if (st.reg[key] !== reg) st.sw[key] = (st.sw[key] || 0) + 1; st.reg[key] = reg; $("#blockPlan").innerHTML = key === "own" ? planHtml(st.plan, "Adaptive", reg, "own") : blockPlanHtml(Number(key.slice(1))); } }
+    const p = ev.target.closest("button[data-pat]"); if (p) { state.patView = p.dataset.pat; render(); }
+  });
+  window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
+  let wasNarrow = narrow();
+  window.addEventListener("resize", () => { if (narrow() !== wasNarrow) { wasNarrow = narrow(); if (!st || st.step === "consent" || (location.hash || "").slice(1) !== "study") render(); } });
+  $("#asof").textContent = MK.data_as_of;
+  window.PFW = { E, state, render, toCsv, simulate, derive };
+  render();
+})();
+</script>
+</body>
+</html>
